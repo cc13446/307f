@@ -8,8 +8,11 @@ enum ScheduleType {
 enum Mode {
     HOT, COLD, FAN
 }
+enum FanSpeed {
+    LOW, MEDIUM, HIGH
+}
 public class LogDao {
-    public boolean storeLog(int roomId, ScheduleType scheduleType, Mode mode, double fanSpeed, double current,
+    public boolean storeLog(int roomId, ScheduleType scheduleType, Mode mode, FanSpeed fanSpeed, double current,
                      double targetTemp, double fee, double feeRate){
         return true;
     }
