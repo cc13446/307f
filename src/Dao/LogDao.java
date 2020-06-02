@@ -2,21 +2,12 @@ package Dao;
 
 import java.util.Date;
 
-enum ScheduleType {
-    NEW_REQUEST, CHANGE_TEMP, CHANGE_FAN_SPEED, CLOSE
-}
-enum Mode {
-    HOT, COLD, FAN
-}
-enum FanSpeed {
-    LOW, MEDIUM, HIGH
-}
+import Domain.Log;
+import Enum.*;
 public class LogDao {
-    public boolean storeLog(int roomId, ScheduleType scheduleType, Mode mode, FanSpeed fanSpeed, double current,
-                     double targetTemp, double fee, double feeRate){
+    public boolean storeLog(Log log){
         return true;
     }
-
     public int QueryTotalFee(int roomId, Date dateIn, Date dateOut){
         return 1;
     }
@@ -45,8 +36,8 @@ public class LogDao {
         return 1;
     }
 
-    public int QueryLog(int roomId, Date dateIn, Date dateOut){
-        return 1;
+    public Log QueryLog(int roomId, Date dateIn, Date dateOut){
+        return new Log();
     }
 
 }
