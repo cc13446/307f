@@ -14,6 +14,7 @@ public class Servant {
     private double fee;
     private double feeRate;
 
+
     public int getRoomId() {
         return roomId;
     }
