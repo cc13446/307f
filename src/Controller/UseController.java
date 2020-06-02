@@ -1,5 +1,5 @@
 package Controller;
 
-public class UseController{
+public class UseController {
 
 }

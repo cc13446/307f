@@ -1,5 +1,5 @@
 package Controller;
 
-public class StartUpController{
+public class StartUpController {
 
 }
