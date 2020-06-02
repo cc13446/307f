@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/BUPT_HOTEL.iml" filepath="$PROJECT_DIR$/BUPT_HOTEL.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/.idea/307f.iml" filepath="$PROJECT_DIR$/.idea/307f.iml" />
+>>>>>>> 5519066fd45c4c0cb94c234d51b5723726083cef
     </modules>
   </component>
 </project>
