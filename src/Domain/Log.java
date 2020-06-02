@@ -1,19 +1,16 @@
-package app;
-enum Mode {
-    HOT, COLD, FAN
-}
-enum FanSpeed {
-    LOW, MEDIUM, HIGH
-}
-public class Servant {
+package Domain;
+
+import Enum.*;
+
+public class Log {
     private int roomId;
+    private ScheduleType scheduleType;
     private Mode mode;
     private FanSpeed fanSpeed;
-    private double currentTemp;
+    private double current;
     private double targetTemp;
     private double fee;
     private double feeRate;
-
 
     public int getRoomId() {
         return roomId;
@@ -21,6 +18,14 @@ public class Servant {
 
     public void setRoomId(int roomId) {
         this.roomId = roomId;
+    }
+
+    public ScheduleType getScheduleType() {
+        return scheduleType;
+    }
+
+    public void setScheduleType(ScheduleType scheduleType) {
+        this.scheduleType = scheduleType;
     }
 
     public Mode getMode() {
@@ -39,12 +44,12 @@ public class Servant {
         this.fanSpeed = fanSpeed;
     }
 
-    public double getCurrentTemp() {
-        return currentTemp;
+    public double getCurrent() {
+        return current;
     }
 
-    public void setCurrentTemp(double currentTemp) {
-        this.currentTemp = currentTemp;
+    public void setCurrent(double current) {
+        this.current = current;
     }
 
     public double getTargetTemp() {
@@ -69,16 +74,5 @@ public class Servant {
 
     public void setFeeRate(double feeRate) {
         this.feeRate = feeRate;
-    }
-    public boolean changeRoomTemp(){
-        return true;
-    }
-
-    public boolean storeLog(){
-        return true;
-    }
-
-    public boolean changeFee(){
-        return true;
     }
 }
