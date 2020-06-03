@@ -1,0 +1,26 @@
+<component name="libraryTable">
+  <library name="source">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/source/antlr-2.7.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/source/byte-buddy-1.10.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/source/classmate-1.5.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/source/dom4j-2.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/source/FastInfoset-1.2.15.jar!/" />
+      <root url="jar://$PROJECT_DIR$/source/hibernate-commons-annotations-5.1.0.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/source/hibernate-core-5.4.10.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/source/istack-commons-runtime-3.0.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/source/jandex-2.1.1.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/source/javassist-3.24.0-GA.jar!/" />
+      <root url="jar://$PROJECT_DIR$/source/javax.activation-api-1.2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/source/javax.persistence-api-2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/source/jaxb-api-2.3.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/source/jaxb-runtime-2.3.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/source/jboss-logging-3.3.2.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/source/jboss-transaction-api_1.2_spec-1.1.1.Final.jar!/" />
+      <root url="file://$PROJECT_DIR$/source" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/source" recursive="false" />
+  </library>
+</component>
