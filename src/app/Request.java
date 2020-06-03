@@ -1,7 +1,8 @@
 package app;
 
 import java.util.Date;
-import Enum.*;
+import Enum.FanSpeed;
+
 public class Request {
 
     private int roomId;
