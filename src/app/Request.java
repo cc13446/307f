@@ -1,6 +1,7 @@
 package app;
 
 import java.util.Date;
+import Enum.FanSpeed;
 
 public class Request {
 

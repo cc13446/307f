@@ -2,6 +2,7 @@ package app;
 
 import java.util.LinkedList;
 import java.util.List;
+import Enum.FanSpeed;
 
 public class ServeQueue {
 
@@ -9,7 +10,6 @@ public class ServeQueue {
 
     public ServeQueue(){
         serveRequestList=new LinkedList<Request>();
-        Request request=new Request(1,35,FanSpeed.LOW,1000,Mode.FAN);
     }
 
     public int size(){
@@ -39,7 +39,6 @@ public class ServeQueue {
                 worst=req;
             }
         }
-        System.out.println(worst.toString());
         return worst;
     }
 

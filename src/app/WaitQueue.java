@@ -3,6 +3,7 @@ package app;
 import java.util.LinkedList;
 import java.util.List;
 import org.junit.*;
+import Enum.FanSpeed;
 
 public class WaitQueue {
 
@@ -10,8 +11,6 @@ public class WaitQueue {
 
     public WaitQueue(){
         waitRequestList=new LinkedList<Request>();
-        Request request=new Request(1,35,FanSpeed.LOW,1000,Mode.FAN);
-        addRequest(request);
     }
 
     public int size(){
@@ -70,7 +69,6 @@ public class WaitQueue {
                 best=req;
             }
         }
-        System.out.println(best.toString());
         return best;
     }
 }
