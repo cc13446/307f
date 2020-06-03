@@ -1,6 +1,8 @@
 package Dao;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import Domain.Log;
 import Enum.*;
@@ -36,8 +38,9 @@ public class LogDao {
         return 1;
     }
 
-    public Log QueryLog(int roomId, Date dateIn, Date dateOut){
-        return new Log();
+    //TODO Change Type
+    public List<Log> QueryLog(int roomId, Date dateIn, Date dateOut){
+        return new ArrayList<Log>();
     }
 
 }
