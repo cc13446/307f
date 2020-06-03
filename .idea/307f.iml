@@ -18,7 +18,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
           <root url="file://$MODULE_DIR$/source" />
@@ -28,5 +28,6 @@
         <jarDirectory url="file://$MODULE_DIR$/source" recursive="false" />
       </library>
     </orderEntry>
+    <orderEntry type="library" exported="" name="jxl" level="project" />
   </component>
 </module>

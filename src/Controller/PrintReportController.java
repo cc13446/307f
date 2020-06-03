@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class PrintReportController {
-    private ReportServant reportServant;//报表服务对象
+    private ReportServant reportServant = new ReportServant(new Report());//报表服务对象
 
 
     //构造方法
@@ -45,7 +45,7 @@ public class PrintReportController {
 //            listRoomId.add(i);
 //
 //        printReportController.QueryReport(listRoomId, TypeReport.ANNUAL, new Date());
-//        if(!printReportController.PrintReport())
+//        if (!printReportController.PrintReport())
 //            System.out.println("error");
 //    }
 }

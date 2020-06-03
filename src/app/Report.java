@@ -13,7 +13,7 @@ public class Report {
 
     //构造函数
     public Report() {
-        this.typeReport = TypeReport.ANNUAL;
+        this.typeReport = TypeReport.DAILY;
     }
 
     public Report(TypeReport typeReport) {

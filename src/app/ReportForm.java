@@ -36,6 +36,10 @@ public class ReportForm {
         return useTime;
     }
 
+    public String getStringUseTime() {
+        return useTime / 1000 / 3600 + "时" + useTime / 1000 / 60 % 60 + "分" + useTime / 1000 % 60 + "秒";
+    }
+
     public void setUseTime(long useTime) {
         this.useTime = useTime;
     }
