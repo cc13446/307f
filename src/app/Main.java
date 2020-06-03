@@ -1,11 +1,11 @@
 package app;
-import Enum.FanSpeed;
+import Enum.*;
 
 public class Main {
     public static void main(String[] args) {
         Scheduler scheduler=new Scheduler(3,2,1);
 
-        Request request1=new Request(1,35,FanSpeed.LOW,1000,Mode.FAN);
+        Request request1=new Request(1,35,FanSpeed.LOW,1000, Mode.FAN);
         scheduler.dealWithRequest(request1);
         Request request2=new Request(2,40,FanSpeed.LOW,100,Mode.FAN);
         scheduler.dealWithRequest(request2);
