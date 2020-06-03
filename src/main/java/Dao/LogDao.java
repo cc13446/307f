@@ -99,19 +99,19 @@ public class LogDao {
         return result.intValue();
     }
 
-    public Date QueryUseTime(int roomId, Date dateIn, Date dateOut){
+    public int QuerySchedulTimes(int roomId, Date dateIn, Date dateOut){
         Session session = HibernateUtils.openSession();
         Transaction tx = session.beginTransaction();
-        Query query = session.createQuery("from Log where roomId = ?1 and time >= ?2 and time <= ?3 and (scheduleType = ?4 or scheduleType = ?5) order by time");
+        Query query = session.createQuery("select count(*) from Log where roomId = ?1 and time >= ?2 and time <= ?3 and (scheduleType = ?4 or scheduleType = ?5) order by time");
         query.setParameter(1, roomId);
         query.setParameter(2, dateIn);
         query.setParameter(3, dateOut);
         query.setParameter(4, ScheduleType.CLOSE);
         query.setParameter(5, ScheduleType.NEW_REQUEST);
-        System.out.println(query.list());
+        Long result = (Long)query.list().get(0);
         tx.commit();
         session.close();
-        return new Date();
+        return result.intValue();
     }
 
     public int QueryChangeTempTimes(int roomId, Date dateIn, Date dateOut){
