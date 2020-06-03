@@ -2,6 +2,7 @@ package app;
 
 import java.util.Date;
 import Enum.*;
+
 public class Request {
 
     private int roomId;

@@ -2,7 +2,7 @@ package app;
 import org.junit.*;
 import Enum.State;
 import Enum.Mode;
-import Enum.*;
+import Enum.FanSpeed;
 
 public class Scheduler {
 
@@ -89,7 +89,10 @@ public class Scheduler {
         if (serveQueue.size()<MAX_SERVE_QUEUE_SIZE){
             //服务对象数小于上限
             Request req = waitQueue.getFastestFanSpeedRequest();
+            System.out.println(serveQueue.size());
+            waitQueue.removeRequest(req.getRoomId());
             serveQueue.addRequest(req);
+            System.out.println("加入队列："+req.toString());
         }else{
             //服务对象数大于等于上限
             Request serveReq=serveQueue.getSlowestFanSpeedRequest();
@@ -98,6 +101,7 @@ public class Scheduler {
                 //等待队列中有风速更快的，触发优先级调度
                 serveQueue.removeRequest(serveReq.getRoomId());
                 serveQueue.addRequest(waitReq);
+                waitQueue.removeRequest(waitReq.getRoomId());
                 System.out.println("移出队列："+serveReq.toString());
                 System.out.println("加入队列："+waitReq.toString());
             }else if(waitReq.getFanSpeed().compareTo(serveReq.getFanSpeed())==0){
