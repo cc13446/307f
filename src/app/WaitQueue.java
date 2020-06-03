@@ -3,7 +3,7 @@ package app;
 import java.util.LinkedList;
 import java.util.List;
 import org.junit.*;
-
+import Enum.*;
 public class WaitQueue {
 
     public List<Request> waitRequestList;

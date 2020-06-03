@@ -2,7 +2,7 @@ package app;
 
 import java.util.LinkedList;
 import java.util.List;
-
+import Enum.*;
 public class ServeQueue {
 
     public List<Request> serveRequestList;

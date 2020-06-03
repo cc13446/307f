@@ -2,6 +2,7 @@ package app;
 import org.junit.*;
 import Enum.State;
 import Enum.Mode;
+import Enum.*;
 
 public class Scheduler {
 
