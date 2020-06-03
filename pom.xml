@@ -8,6 +8,8 @@
     <artifactId>307f</artifactId>
     <version>1.0-SNAPSHOT</version>
     <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <!-- 统一源码的编码方式 -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- 统一各个框架版本 -->
@@ -18,12 +20,17 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+            <version>2.4</version>
+            <classifier>jdk15</classifier>
+        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.1</version>
-            <scope>test</scope>
+            <version>4.12</version>
         </dependency>
 
         <dependency>
@@ -87,16 +94,11 @@
             <version>${slf4j.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.vladsch.flexmark</groupId>
-            <artifactId>flexmark-all</artifactId>
-            <version>0.50.50</version>
-        </dependency>
-        
+
     </dependencies>
 
     <build>
         <finalName>demo1</finalName>
     </build>
-    
+
 </project>
