@@ -2,7 +2,7 @@ package app;
 
 import java.util.LinkedList;
 import java.util.List;
-import Enum.FanSpeed;
+import Enum.*;
 
 public class ServeQueue {
 
@@ -18,12 +18,16 @@ public class ServeQueue {
 
     public void addRequest(Request request){
         serveRequestList.add(request);
+        System.out.println("加入服务队列："+request.toString());
+        System.out.println("服务队列长度："+serveRequestList.size());
     }
 
     public boolean removeRequest(int roomId){
         for (Request req:serveRequestList){
             if(roomId==req.getRoomId()){
                 serveRequestList.remove(req);
+                System.out.println("移出服务队列："+req.toString());
+                System.out.println("服务队列长度："+serveRequestList.size());
                 return true;
             }
         }
