@@ -1,10 +1,7 @@
 package app;
-enum Mode {
-    HOT, COLD, FAN
-}
-enum FanSpeed {
-    LOW, MEDIUM, HIGH
-}
+import Domain.Log;
+import Enum.*;
+import Dao.LogDao;
 public class Servant {
     private int roomId;
     private Mode mode;
@@ -13,7 +10,16 @@ public class Servant {
     private double targetTemp;
     private double fee;
     private double feeRate;
+    private LogDao logDao = new LogDao();
 
+    public Servant(int roomId, Mode mode, FanSpeed fanSpeed, double targetTemp, double feeRate) {
+        this.roomId = roomId;
+        this.mode = mode;
+        this.fanSpeed = fanSpeed;
+        this.targetTemp = targetTemp;
+        this.fee = 0;
+        this.feeRate = feeRate;
+    }
 
     public int getRoomId() {
         return roomId;
@@ -74,11 +80,13 @@ public class Servant {
         return true;
     }
 
-    public boolean storeLog(){
-        return true;
+    public boolean storeLog(ScheduleType scheduleType){
+        Log log = new Log(roomId, scheduleType, mode, fanSpeed, currentTemp, targetTemp, fee, feeRate);
+        return logDao.storeLog(log);
     }
 
     public boolean changeFee(){
+        fee += feeRate;
         return true;
     }
 }
