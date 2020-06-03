@@ -81,10 +81,10 @@ public class ReportServant {
                 reportForm.setTotalFee(logDao.QueryTotalFee(roomId, date, date));//总费用直接获得
                 //其他信息只能按日期查询，循环，一共计算365天的数据之和
                 for (Date durDate = date; (date.getTime() - durDate.getTime()) / (24 * 3600 * 1000) < 365; durDate = subOneDay(durDate)) {
-                    reportForm.setChangeFanSpeedTimes(reportForm.getChangeFanSpeedTimes() + logDao.QueryChangeFanSpeedTimes(roomId, date));
+                    reportForm.setChangeFanSpeedTimes(reportForm.getChangeFanSpeedTimes() + logDao.QueryChangeFanTimes(roomId, date));
                     reportForm.setChangeTempTimes(reportForm.getChangeTempTimes() + logDao.QueryChangeTempTimes(roomId, date));
-                    reportForm.setDetailBillNumber(reportForm.getDetailBillNumber() + logDao.QueryDetailNumbers(roomId, date));
-                    reportForm.setSchedulerTimes(reportForm.getSchedulerTimes() + logDao.QuerySchedulerTimes(roomId, date));
+//                    reportForm.setDetailBillNumber(reportForm.getDetailBillNumber() + logDao.QueryDetailNumbers(roomId, date));
+//                    reportForm.setSchedulerTimes(reportForm.getSchedulerTimes() + logDao.QuerySchedulerTimes(roomId, date));
                     reportForm.setTurnTimes(reportForm.getTurnTimes() + logDao.QueryTurnTimes(roomId, date));
                     reportForm.setUseTime(reportForm.getUseTime() + logDao.QueryUseTime(roomId, date));
                 }
