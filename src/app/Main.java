@@ -1,8 +1,15 @@
 package app;
 import Enum.*;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Scheduler scheduler=new Scheduler(3,2,1);
 
         Request request1=new Request(1,35,FanSpeed.LOW,1000, Mode.FAN);
@@ -13,5 +20,8 @@ public class Main {
         scheduler.dealWithRequest(request3);
         Request request4=new Request(4,40,FanSpeed.MEDIUM,100,Mode.FAN);
         scheduler.dealWithRequest(request4);
+
+
     }
+
 }

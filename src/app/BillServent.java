@@ -22,16 +22,21 @@ public class BillServent {
         LogDao logDao=new LogDao();
         logs=logDao.QueryLog(roomId, dateIn, dateOut);
 
-        for (Log log:logs){
+        for (int i=0;i<logs.size()-1;i++){
             DetailBillItem item=new DetailBillItem();
-            item.setFee(log.getFee());//每个item的fee
-            item.setFanSpeed(log.getFanSpeed());//风速，高中低
-            item.setMode(log.getMode());//模式
-            item.setTargetTemp(log.getTargetTemp());//目标温度
+            item.setFee(logs.get(i+1).getFee()-logs.get(i).getFee());//每个item的fee 后一个减当前
+            item.setFanSpeed(logs.get(i).getFanSpeed());//风速，高中低
+            item.setMode(logs.get(i).getMode());//模式
+            item.setTargetTemp(logs.get(i).getTargetTemp());//目标温度
+            item.setScheduleType(logs.get(i).getScheduleType());
+            item.setDuration(logs.get(i+1).getTime().getTime()-logs.get(i).getTime().getTime());//毫秒 后一个log的时间减去这个log的时间
+            item.setStartTime(logs.get(i).getTime());
+            item.setFeeRate(logs.get(i).getFeeRate());
             items.add(item);
 
 
         }
+        detailBill.setRoomId(roomId);
         detailBill.setDateIn(dateIn);
         detailBill.setDateOut(dateOut);
         detailBill.setDetailBillList(items);
@@ -42,8 +47,19 @@ public class BillServent {
         File detailBillFile=new File("DetailBillFile.txt");
         //OutputStream outputStream=new FileOutputStream(detailBillFile);
         BufferedWriter writer = new BufferedWriter(new FileWriter("DetailBillFile.txt"));
+        writer.write("房间"+RoomId+'\n'+'\n');
         for (int i=0;i<detailBill.getDetailBillList().size();i++){
-            writer.write(detailBill.getDetailBillList().get(i).toString()+'\n');
+            //writer.write(detailBill.getDetailBillList().get(i).toString()+'\n');
+            writer.write("服务开始时间："+detailBill.getDetailBillList().get(i).getStartTime().toString()+'\n');
+            writer.write("服务持续时间："+String.valueOf(detailBill.getDetailBillList().get(i).getDuration())+'\n');
+            writer.write("目标温度："+String.valueOf(detailBill.getDetailBillList().get(i).getTargetTemp())+'\n');
+            writer.write("风速："+detailBill.getDetailBillList().get(i).getFee()+'\n');
+            writer.write("模式："+detailBill.getDetailBillList().get(i).getMode()+'\n');
+            writer.write("费率"+detailBill.getDetailBillList().get(i).getFeeRate()+'\n');
+            writer.write("服务的费用"+detailBill.getDetailBillList().get(i).getFee()+'\n');
+            writer.write("---------------------------------------------" +'\n');
+
+
 
 
         }
@@ -68,9 +84,11 @@ public class BillServent {
 
         File Invoice=new File("InvoiceFile.txt");
         BufferedWriter writer = new BufferedWriter(new FileWriter("InvoiceFile.txt"));
-        writer.write(dateIn.toString()+'\t');
-        writer.write(dateOut.toString()+'\t');
-        writer.write(String.valueOf(roomId)+'\n');
+        writer.write("房间"+String.valueOf(roomId)+'\n');
+        writer.write("总费用"+String.valueOf(invoice.getTotalFee())+'\n');
+        writer.write("入住时间"+dateIn.toString()+'\n');
+        writer.write("退房时间"+dateOut.toString()+'\n');
+
 
     }
 }

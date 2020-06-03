@@ -7,18 +7,18 @@ public class DetailBill {
     private int roomId;
     private Date dateIn;
     private Date dateOut;
-    private String information;
+    //private String information;
     private ArrayList<DetailBillItem> detailBillList;
 
 
 
-    public double getTotal(){
-        double total=0;
-        for(DetailBillItem item:detailBillList){
-            total=total+item.getFee();
-        }
-        return total;
-    }
+//    public double getTotal(){
+//        double total=0;
+//        for(DetailBillItem item:detailBillList){
+//            total=total+item.getFee();
+//        }
+//        return total;
+//    }
 
     public int getRoomId() {
         return roomId;
@@ -44,13 +44,13 @@ public class DetailBill {
         this.dateOut = dateOut;
     }
 
-    public String getInformation() {
-        return information;
-    }
-
-    public void setInformation(String information) {
-        this.information = information;
-    }
+//    public String getInformation() {
+//        return information;
+//    }
+//
+//    public void setInformation(String information) {
+//        this.information = information;
+//    }
 
     public ArrayList<DetailBillItem> getDetailBillList() {
         return detailBillList;
