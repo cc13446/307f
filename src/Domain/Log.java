@@ -75,4 +75,6 @@ public class Log {
     public void setFeeRate(double feeRate) {
         this.feeRate = feeRate;
     }
+
+
 }
