@@ -1,10 +1,8 @@
 package app;
 import org.junit.*;
-import Enum.State;
-import Enum.Mode;
-import Enum.FanSpeed;
+import Enum.*;
 
-public class Scheduler {
+public class Scheduler implements Runnable {
 
     private State state;
 
@@ -89,10 +87,8 @@ public class Scheduler {
         if (serveQueue.size()<MAX_SERVE_QUEUE_SIZE){
             //服务对象数小于上限
             Request req = waitQueue.getFastestFanSpeedRequest();
-            System.out.println(serveQueue.size());
             waitQueue.removeRequest(req.getRoomId());
             serveQueue.addRequest(req);
-            System.out.println("加入队列："+req.toString());
         }else{
             //服务对象数大于等于上限
             Request serveReq=serveQueue.getSlowestFanSpeedRequest();
@@ -100,12 +96,25 @@ public class Scheduler {
             if (waitReq.getFanSpeed().compareTo(serveReq.getFanSpeed())>0){
                 //等待队列中有风速更快的，触发优先级调度
                 serveQueue.removeRequest(serveReq.getRoomId());
-                serveQueue.addRequest(waitReq);
+                waitQueue.addRequest(serveReq);
                 waitQueue.removeRequest(waitReq.getRoomId());
-                System.out.println("移出队列："+serveReq.toString());
-                System.out.println("加入队列："+waitReq.toString());
+                serveQueue.addRequest(waitReq);
             }else if(waitReq.getFanSpeed().compareTo(serveReq.getFanSpeed())==0){
                 //触发时间片轮转
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(2000);
+                            System.out.println("2s后");
+                            serveQueue.removeRequest(serveReq.getRoomId());
+                            waitQueue.addRequest(serveReq);
+                            schedule();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
 
             }else{
 
@@ -113,4 +122,10 @@ public class Scheduler {
         }
     }
 
+    @Override
+    public void run() {
+        while(true){
+
+        }
+    }
 }
