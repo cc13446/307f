@@ -139,6 +139,7 @@ public class Scheduler implements Runnable {
                 waitQueue.addRequest(serveReq);
                 waitQueue.removeRequest(waitReq.getRoomId());
                 serveQueue.addRequest(waitReq);
+                schedule();
             }else if(waitReq.getFanSpeed().compareTo(serveReq.getFanSpeed())==0){
                 //触发时间片轮转
                 new Thread(new Runnable() {
@@ -146,10 +147,17 @@ public class Scheduler implements Runnable {
                     public void run() {
                         try {
                             Thread.sleep(2000);
-                            System.out.println("2s后");
-                            serveQueue.removeRequest(serveReq.getRoomId());
-                            waitQueue.addRequest(serveReq);
-                            schedule();
+                            if (null!=serveQueue.findRequest(serveReq.getRoomId())){
+                                System.out.println("2s后");
+                                serveQueue.removeRequest(serveReq.getRoomId());
+                                waitQueue.addRequest(serveReq);
+                                Request nowWaitReq=waitQueue.getFastestFanSpeedRequest();
+                                waitQueue.removeRequest(nowWaitReq.getRoomId());
+                                serveQueue.addRequest(nowWaitReq);
+                                schedule();
+                            }else{
+
+                            }
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
