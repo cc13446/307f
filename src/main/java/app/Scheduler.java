@@ -4,7 +4,7 @@ import Enum.FanSpeed;
 import Enum.Mode;
 import Enum.State;
 
-public class Scheduler implements Runnable {
+public class Scheduler  {
 
     private State state;
 
@@ -170,10 +170,10 @@ public class Scheduler implements Runnable {
         }
     }
 
-    @Override
-    public void run() {
-        while(true){
-
-        }
-    }
+//    @Override
+//    public void run() {
+//        while(true){
+//
+//        }
+//    }
 }

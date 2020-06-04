@@ -20,7 +20,7 @@ public class StartUpController {
         useController = new UseController(scheduler);
         checkRoomStateController = new CheckRoomStateController(scheduler);
 
-        new Thread(scheduler).start();
+//        new Thread(scheduler).start();
 
         Request request1=new Request(1,35,FanSpeed.LOW,1000, Mode.FAN);
         scheduler.dealWithRequest(request1);
