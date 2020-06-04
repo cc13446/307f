@@ -1,7 +1,19 @@
 package Controller;
 
+import app.CheckRoomStateServant;
+import app.Scheduler;
+import java.util.List;
+
 public class CheckRoomStateController {
-    public static void main(String[] args) {
-        System.out.println("Hello, world!");
+    private Scheduler scheduler;
+
+    public CheckRoomStateController(Scheduler scheduler) {
+        this.scheduler = scheduler;
+    }
+
+    public void checkRoomState(List<Integer> roomList) {
+//        CheckRoomStateServant checkRoomStateServant = new CheckRoomStateServant();
+//        checkRoomStateServant.checkRoomState(roomList);
+        CheckRoomStateServant.checkRoomState(roomList);
     }
 }

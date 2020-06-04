@@ -1,5 +1,5 @@
 package Enum;
 
 public enum State {
-    ON,OFF
+    ON,OFF,SET_MODE
 }

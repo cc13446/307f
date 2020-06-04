@@ -1,7 +1,15 @@
 package app;
 
+import java.util.List;
+import Enum.*
+
 public class CheckRoomStateServant {
-    public static void main(String[] args) {
-        System.out.println("Hello, world!");
+    public static void checkRoomState(List<Integer> roomList) {
+        for (int roomID:roomList) {
+            State state;
+
+            Request request = WaitQueue.findRequest(roomID);
+
+        }
     }
 }

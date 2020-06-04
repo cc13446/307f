@@ -26,10 +26,7 @@ public class Scheduler implements Runnable {
 
     private final int MAX_SERVE_QUEUE_SIZE;
 
-    public Scheduler(double feeRateHigh,double feeRateMid,double feeRateLow){
-        FEE_RATE_HIGH=feeRateHigh;
-        FEE_RATE_MID=feeRateMid;
-        FEE_RATE_LOW=feeRateLow;
+    public Scheduler(){
         MAX_SERVE_QUEUE_SIZE=3;
 
         state=State.OFF;
