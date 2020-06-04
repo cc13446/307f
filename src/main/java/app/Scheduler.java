@@ -1,18 +1,20 @@
 package app;
-import org.junit.*;
-import Enum.*;
+
+import Enum.FanSpeed;
+import Enum.Mode;
+import Enum.State;
 
 public class Scheduler implements Runnable {
 
     private State state;
 
-    private Mode defaultMode=Mode.FAN;
+    private Mode defaultMode;
 
     private double tempHighLimit;
 
     private double tempLowLimit;
 
-    private double defaultTargetTemp=24.0;
+    private double defaultTargetTemp;
 
     private final double FEE_RATE_HIGH;
 
@@ -26,13 +28,35 @@ public class Scheduler implements Runnable {
 
     private final int MAX_SERVE_QUEUE_SIZE;
 
-    public Scheduler(){
+    public Scheduler(double feeRateHigh, double feeRateMid, double feeRateLow){
+        FEE_RATE_HIGH=feeRateHigh;
+        FEE_RATE_MID=feeRateMid;
+        FEE_RATE_LOW=feeRateLow;
         MAX_SERVE_QUEUE_SIZE=3;
 
         state=State.OFF;
         waitQueue=new WaitQueue();
         serveQueue=new ServeQueue();
+    }
 
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public void setDefaultMode(Mode defaultMode) {
+        this.defaultMode = defaultMode;
+    }
+
+    public void setTempHighLimit(double tempHighLimit) {
+        this.tempHighLimit = tempHighLimit;
+    }
+
+    public void setTempLowLimit(double tempLowLimit) {
+        this.tempLowLimit = tempLowLimit;
+    }
+
+    public void setDefaultTargetTemp(double defaultTargetTemp) {
+        this.defaultTargetTemp = defaultTargetTemp;
     }
 
     public void changeFanSpeed(int roomId, FanSpeed fanSpeed){
