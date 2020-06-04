@@ -1,7 +1,6 @@
 package app;
 
-import Enum.FanSpeed;
-import Enum.State;
+import Enum.*;
 
 public class CheckRoomStateServant {
     public static RoomStateForm checkRoomState(int roomID, Scheduler scheduler) {
