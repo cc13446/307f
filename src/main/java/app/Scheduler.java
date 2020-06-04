@@ -62,6 +62,18 @@ public class Scheduler implements Runnable {
         this.defaultTargetTemp = defaultTargetTemp;
     }
 
+    public double getFEE_RATE_HIGH() {
+        return FEE_RATE_HIGH;
+    }
+
+    public double getFEE_RATE_MID() {
+        return FEE_RATE_MID;
+    }
+
+    public double getFEE_RATE_LOW() {
+        return FEE_RATE_LOW;
+    }
+
     public void addRoom(int roomID, double currentTemp, double initTemp) {
         roomList.addRoom(roomID, currentTemp, initTemp);
     }
