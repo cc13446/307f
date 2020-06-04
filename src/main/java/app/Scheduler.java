@@ -4,7 +4,7 @@ import Enum.FanSpeed;
 import Enum.Mode;
 import Enum.State;
 
-public class Scheduler implements Runnable {
+public class Scheduler {
 
     private State state;
 
@@ -84,6 +84,7 @@ public class Scheduler implements Runnable {
             //在服务队列中
             req.setFanSpeed(fanSpeed);
             schedule();
+            return;
         }
         req=waitQueue.findRequest(roomId);
         if (req!=null){
@@ -167,13 +168,6 @@ public class Scheduler implements Runnable {
             }else{
 
             }
-        }
-    }
-
-    @Override
-    public void run() {
-        while(true){
-
         }
     }
 }
