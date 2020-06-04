@@ -32,7 +32,7 @@ public class CheckRoomStateServant {
         if (state == State.HANG_UP) {
             request = scheduler.waitQueue.findRequest(roomID);
         }
-        if (state == State.SERVING){
+        if (state == State.ON){
             request = scheduler.serveQueue.findRequest(roomID);
         }
 
