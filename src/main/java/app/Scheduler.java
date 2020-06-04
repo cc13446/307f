@@ -28,6 +28,8 @@ public class Scheduler implements Runnable {
 
     private final int MAX_SERVE_QUEUE_SIZE;
 
+    public RoomList roomList;
+
     public Scheduler(double feeRateHigh, double feeRateMid, double feeRateLow){
         FEE_RATE_HIGH=feeRateHigh;
         FEE_RATE_MID=feeRateMid;
@@ -37,6 +39,7 @@ public class Scheduler implements Runnable {
         state=State.OFF;
         waitQueue=new WaitQueue();
         serveQueue=new ServeQueue();
+        roomList=new RoomList();
     }
 
     public void setState(State state) {
@@ -57,6 +60,10 @@ public class Scheduler implements Runnable {
 
     public void setDefaultTargetTemp(double defaultTargetTemp) {
         this.defaultTargetTemp = defaultTargetTemp;
+    }
+
+    public void addRoom(int roomID, double currentTemp, double initTemp) {
+        roomList.addRoom(roomID, currentTemp, initTemp);
     }
 
     public void changeFanSpeed(int roomId, FanSpeed fanSpeed){

@@ -14,6 +14,6 @@ public class CheckRoomStateController {
     public void checkRoomState(List<Integer> roomList) {
 //        CheckRoomStateServant checkRoomStateServant = new CheckRoomStateServant();
 //        checkRoomStateServant.checkRoomState(roomList);
-        CheckRoomStateServant.checkRoomState(roomList);
+        CheckRoomStateServant.checkRoomState(roomList, scheduler);
     }
 }

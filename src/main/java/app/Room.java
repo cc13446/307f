@@ -9,7 +9,7 @@ public class Room {
     private double initTemp;
     private double fee;
 
-    private State getState() {
+    public State getState() {
         return state;
     }
 
