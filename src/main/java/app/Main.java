@@ -2,10 +2,16 @@ package app;
 import Controller.StartUpController;
 import Enum.*;
 
-public class Main {
-    public static void main(String[] args) {
+import java.io.IOException;
 
-//        Scheduler scheduler=new Scheduler(3,2,1);
+public class Main {
+    public static void main(String[] args) throws IOException {
+
+        new StartUpController(1.5, 1, 0.5, Mode.HOT, 10.0, 10.0,20.0).powerOn();
+        while (true){
+
+        }
+        //        Scheduler scheduler=new Scheduler(3,2,1);
 //
 //        new Thread(scheduler).start();
 //
@@ -19,7 +25,7 @@ public class Main {
 //        scheduler.dealWithRequest(request4);
 //        Request request5=new Request(5,40,FanSpeed.LOW,100,Mode.FAN);
 //        scheduler.dealWithRequest(request5);
-        StartUpController startup=new StartUpController();
-        startup.powerOn();
+        //StartUpController startup=new StartUpController(1.0, 1.0, 1.0);
+        //startup.powerOn();
     }
 }

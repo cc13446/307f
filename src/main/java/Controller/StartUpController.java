@@ -1,8 +1,12 @@
 package Controller;
 
 import Enum.*;
+import MyHttpHandler.FanHttpHandler;
+import MyHttpServe.HttpToServe;
 import app.Request;
 import app.Scheduler;
+
+import java.io.IOException;
 
 public class StartUpController {
     private Scheduler scheduler;
@@ -14,14 +18,27 @@ public class StartUpController {
     private double feeRateHigh;
     private double feeRateMid;
     private double feeRateLow;
+    private Mode mode;
+    private double tempHighLimit;
+    private double tempLowLimit;
+    private double defaultTargetTemp;
 
-    public boolean powerOn() {
+    public StartUpController(double feeRateHigh, double feeRateMid, double feeRateLow, Mode mode, double tempHighLimit, double tempLowLimit, double defaultTargetTemp) {
+        this.feeRateHigh = feeRateHigh;
+        this.feeRateMid = feeRateMid;
+        this.feeRateLow = feeRateLow;
+        this.mode = mode;
+        this.tempHighLimit = tempHighLimit;
+        this.tempLowLimit = tempLowLimit;
+        this.defaultTargetTemp = defaultTargetTemp;
+    }
+
+    public boolean powerOn() throws IOException {
         scheduler = new Scheduler(feeRateHigh, feeRateMid, feeRateLow);
+        setPara(mode, tempHighLimit, tempLowLimit, defaultTargetTemp);
         useController = new UseController(scheduler);
         checkRoomStateController = new CheckRoomStateController(scheduler);
-
-//        new Thread(scheduler).start();
-
+        // test
         Request request1=new Request(1,35,FanSpeed.LOW,1000, Mode.FAN);
         scheduler.dealWithRequest(request1);
         Request request2=new Request(2,40,FanSpeed.LOW,100,Mode.FAN);
@@ -30,21 +47,12 @@ public class StartUpController {
         scheduler.dealWithRequest(request3);
         Request request4=new Request(4,40,FanSpeed.MEDIUM,100,Mode.FAN);
         scheduler.dealWithRequest(request4);
-        Request request5=new Request(5,40,FanSpeed.LOW,100,Mode.FAN);
+        Request request5=new Request(5,40,FanSpeed.MEDIUM,100,Mode.FAN);
         scheduler.dealWithRequest(request5);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(1000);
-                    Request request6=new Request(6,40,FanSpeed.HIGH,100,Mode.FAN);
-                    scheduler.dealWithRequest(request6);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+        FanHttpHandler fanHttpHandler = new FanHttpHandler(useController);
+        HttpToServe fanServe = new HttpToServe("/room/fan", 80);
+        fanServe.beginServe(fanHttpHandler);
 
         return true;
     }
