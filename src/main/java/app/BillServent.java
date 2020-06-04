@@ -36,6 +36,17 @@ public class BillServent {
 
 
         }
+        int len = logs.size() - 1;
+        DetailBillItem item = new DetailBillItem();
+        item.setFee(0);//每个item的fee 后一个减当前
+        item.setFanSpeed(logs.get(len).getFanSpeed());//风速，高中低
+        item.setMode(logs.get(len).getMode());//模式
+        item.setTargetTemp(logs.get(len).getTargetTemp());//目标温度
+        item.setScheduleType(logs.get(len).getScheduleType());
+        item.setDuration(0);//毫秒 后一个log的时间减去这个log的时间
+        item.setStartTime(logs.get(len).getTime());
+        item.setFeeRate(logs.get(len).getFeeRate());
+        items.add(item);
         detailBill.setRoomId(roomId);
         detailBill.setDateIn(dateIn);
         detailBill.setDateOut(dateOut);
