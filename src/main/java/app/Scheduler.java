@@ -4,7 +4,7 @@ import Enum.FanSpeed;
 import Enum.Mode;
 import Enum.State;
 
-public class Scheduler implements Runnable {
+public class Scheduler {
 
     private State state;
 
@@ -74,8 +74,18 @@ public class Scheduler implements Runnable {
         return FEE_RATE_LOW;
     }
 
+    public Mode getDefaultMode(){
+        return defaultMode;
+    }
+
     public void addRoom(int roomID, double currentTemp, double initTemp) {
         roomList.addRoom(roomID, currentTemp, initTemp);
+        System.out.println("Scheduler addRoom");
+    }
+
+    public void removeRoom(int ID){
+        roomList.removeRoom(ID);
+        System.out.println("removeRoom");
     }
 
     public void changeFanSpeed(int roomId, FanSpeed fanSpeed){
@@ -84,6 +94,7 @@ public class Scheduler implements Runnable {
             //在服务队列中
             req.setFanSpeed(fanSpeed);
             schedule();
+            return;
         }
         req=waitQueue.findRequest(roomId);
         if (req!=null){
@@ -127,6 +138,9 @@ public class Scheduler implements Runnable {
         if (serveQueue.size()<MAX_SERVE_QUEUE_SIZE){
             //服务对象数小于上限
             Request req = waitQueue.getFastestFanSpeedRequest();
+            if(req == null){
+                return;
+            }
             waitQueue.removeRequest(req.getRoomId());
             serveQueue.addRequest(req);
         }else{
@@ -167,13 +181,6 @@ public class Scheduler implements Runnable {
             }else{
 
             }
-        }
-    }
-
-    @Override
-    public void run() {
-        while(true){
-
         }
     }
 }

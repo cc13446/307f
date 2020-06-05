@@ -6,16 +6,18 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import net.sf.json.JSONObject;
 import Enum.*;
+
 import java.io.*;
 
-public class FanHttpHandler implements HttpHandler {
+public class FeeHttpHandler implements HttpHandler {
     private UseController useController;
 
-    public FanHttpHandler(UseController useController) {
+    public FeeHttpHandler(UseController useController){
         super();
-        this.useController = useController;
+        this.useController=useController;
     }
 
+    @Override
     public void handle(HttpExchange exchange) throws IOException {
         String requestMethod = exchange.getRequestMethod();
         if (requestMethod.equalsIgnoreCase("POST")) {

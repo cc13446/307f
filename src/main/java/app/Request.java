@@ -4,6 +4,8 @@ import java.util.Date;
 import Enum.*;
 
 public class Request {
+    //请求唯一ID
+    private int ID;
 
     private int roomId;
 
@@ -24,6 +26,13 @@ public class Request {
     }
 
 
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
     public int getRoomId() {
         return roomId;
     }

@@ -1,43 +1,44 @@
 package MyHttpHandler;
 
 import Controller.UseController;
+import app.Request;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import net.sf.json.JSONObject;
 import Enum.*;
+
 import java.io.*;
 
-public class FanHttpHandler implements HttpHandler {
+public class RoomExitHttpHandler implements HttpHandler {
     private UseController useController;
 
-    public FanHttpHandler(UseController useController) {
-        super();
-        this.useController = useController;
+    public RoomExitHttpHandler(UseController useController){
+        this.useController=useController;
     }
 
+    @Override
     public void handle(HttpExchange exchange) throws IOException {
         String requestMethod = exchange.getRequestMethod();
-        if (requestMethod.equalsIgnoreCase("POST")) {
-            System.out.println(exchange.getRequestURI());
+        if (requestMethod.equalsIgnoreCase("PUT")) {
             InputStream in = exchange.getRequestBody();
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             String str = reader.readLine();
-            JSONObject temp = JSONObject.fromObject(str);
-            System.out.println("收到：" + temp);
-            int id=temp.getInt("id");
-            int fanSpeed=temp.getInt("fanSpeed");
-
-            useController.changeFanSpeed(id, FanSpeed.values()[fanSpeed]);
-
+            System.out.println(str);
+            JSONObject resJson = JSONObject.fromObject(str);
+            System.out.println("收到：" + resJson);
+            //这里不是roomId
+            int id=resJson.getInt("id");
+            //
+            //从id取得房间id
+            //
+            useController.requestEnd(id);
             Headers responseHeaders = exchange.getResponseHeaders();
             responseHeaders.set("Content-Type", "application/json");
             exchange.sendResponseHeaders(200, 0);
-
             OutputStream responseBody = exchange.getResponseBody();
             JSONObject json=new JSONObject();
             json.put("status",0);
-
             responseBody.write(json.toString().getBytes());
             responseBody.close();
         }

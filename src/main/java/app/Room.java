@@ -3,11 +3,23 @@ package app;
 import Enum.State;
 
 public class Room {
+
+
+    //标志服务的唯一ID
+    private int ID;
     private State state;
     private int roomID;
     private double currentTemp;
     private double initTemp;
     private double fee;
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
 
     public State getState() {
         return state;
