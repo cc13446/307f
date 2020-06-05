@@ -6,16 +6,18 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import net.sf.json.JSONObject;
 import Enum.*;
+
 import java.io.*;
 
-public class FanHttpHandler implements HttpHandler {
+public class TempHttpHandler implements HttpHandler {
     private UseController useController;
 
-    public FanHttpHandler(UseController useController) {
+    public TempHttpHandler(UseController useController){
         super();
-        this.useController = useController;
+        this.useController=useController;
     }
 
+    @Override
     public void handle(HttpExchange exchange) throws IOException {
         String requestMethod = exchange.getRequestMethod();
         if (requestMethod.equalsIgnoreCase("POST")) {
@@ -26,9 +28,9 @@ public class FanHttpHandler implements HttpHandler {
             JSONObject temp = JSONObject.fromObject(str);
             System.out.println("收到：" + temp);
             int id=temp.getInt("id");
-            int fanSpeed=temp.getInt("fanSpeed");
+            double targetTemperature=temp.getInt("targetTemperature");
 
-            useController.changeFanSpeed(id, FanSpeed.values()[fanSpeed]);
+            useController.changeTargetTemp(id,targetTemperature);
 
             Headers responseHeaders = exchange.getResponseHeaders();
             responseHeaders.set("Content-Type", "application/json");
