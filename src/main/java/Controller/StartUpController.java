@@ -55,7 +55,7 @@ public class StartUpController {
 //        Request request5=new Request(5,40,FanSpeed.MEDIUM,100,Mode.FAN);
 //        scheduler.dealWithRequest(request5);
 
-        HttpToServe fanServe = new HttpToServe(8080);
+        HttpToServe fanServe = new HttpToServe(80);
 
         List<HttpHandler> handlerList=new ArrayList<HttpHandler>(Arrays.asList(
                 new FanHttpHandler(useController),
