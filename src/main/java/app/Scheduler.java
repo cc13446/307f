@@ -80,7 +80,7 @@ public class Scheduler {
 
     public void addRoom(int roomID, double currentTemp, double initTemp) {
         roomList.addRoom(roomID, currentTemp, initTemp);
-        System.out.println("hello");
+        System.out.println("Scheduler addRoom");
     }
 
     public void changeFanSpeed(int roomId, FanSpeed fanSpeed){
@@ -133,6 +133,9 @@ public class Scheduler {
         if (serveQueue.size()<MAX_SERVE_QUEUE_SIZE){
             //服务对象数小于上限
             Request req = waitQueue.getFastestFanSpeedRequest();
+            if(req == null){
+                return;
+            }
             waitQueue.removeRequest(req.getRoomId());
             serveQueue.addRequest(req);
         }else{

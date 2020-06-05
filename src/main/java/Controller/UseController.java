@@ -34,6 +34,7 @@ public class UseController {
     }
 
     public void addRoom(int roomID, double currentTemp, double initTemp) {
+        System.out.println("useController addRoom");
         scheduler.addRoom(roomID, currentTemp, initTemp);
     }
 
