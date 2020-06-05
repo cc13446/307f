@@ -92,7 +92,7 @@ public class DetailBillItem {
         this.mode = mode;
     }
 
-    public double getDuration() {
+    public long getDuration() {
         return duration;
     }
 
