@@ -44,7 +44,7 @@ public class RoomInitHttpHandler implements HttpHandler {
                 highestTemperature=25;
             }
 
-            useController.addRoom(roomId,currentTemperature,defaultTargetTemperature);
+            useController.addRoom(roomNum, roomId,currentTemperature,defaultTargetTemperature);
 
             Headers responseHeaders = exchange.getResponseHeaders();
             responseHeaders.set("Content-Type", "application/json");

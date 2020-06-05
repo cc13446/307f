@@ -6,19 +6,19 @@ public class Room {
 
 
     //标志服务的唯一ID
-    private int ID;
+    private int customId;
     private State state;
     private int roomID;
     private double currentTemp;
     private double initTemp;
     private double fee;
 
-    public int getID() {
-        return ID;
+    public int getCustomId() {
+        return customId;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setCustomId(int customId) {
+        this.customId = customId;
     }
 
     public State getState() {
@@ -61,12 +61,25 @@ public class Room {
         this.currentTemp = currentTemp;
     }
 
-    public Room(int roomID, double currentTemp, double initTemp) {
+    public Room(int customId, int roomID, double currentTemp, double initTemp) {
+        this.customId = customId;
         this.state = State.OFF;
         this.roomID = roomID;
         this.currentTemp = currentTemp;
         this.initTemp = initTemp;
         this.fee = 0;
         System.out.println("Create room " + roomID + " with CurrentTemp:" + currentTemp + " and initTemp:" + initTemp);
+    }
+
+    @Override
+    public String toString() {
+        return "Room{" +
+                "customId=" + customId +
+                ", state=" + state +
+                ", roomID=" + roomID +
+                ", currentTemp=" + currentTemp +
+                ", initTemp=" + initTemp +
+                ", fee=" + fee +
+                '}';
     }
 }

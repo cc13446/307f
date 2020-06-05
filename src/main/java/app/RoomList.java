@@ -10,14 +10,15 @@ public class RoomList {
         totalRoomList = new ArrayList<Room>();
     }
 
-    public void addRoom(int roomID, double currentTemp, double initTemp) {
-        Room room = new Room(roomID, currentTemp, initTemp);
+    public void addRoom(int customId,int roomID, double currentTemp, double initTemp) {
+        Room room = new Room(customId, roomID, currentTemp, initTemp);
+        System.out.println(room);
         totalRoomList.add(room);
     }
 
-    public boolean removeRoom(int roomID) {
+    public boolean removeRoom(int customId) {
         for (Room room: totalRoomList) {
-            if (room.getRoomID()==roomID) {
+            if (room.getCustomId()==customId) {
                 totalRoomList.remove(room);
                 return true;
             }
@@ -25,9 +26,9 @@ public class RoomList {
         return false;
     }
 
-    public Room findRoom(int roomID) {
+    public Room findRoom(int customId) {
         for (Room room: totalRoomList) {
-            if (room.getRoomID()==roomID) {
+            if (room.getCustomId() ==customId) {
                 return room;
             }
         }

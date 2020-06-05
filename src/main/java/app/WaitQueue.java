@@ -2,15 +2,15 @@ package app;
 
 import java.util.LinkedList;
 import java.util.List;
-import org.junit.*;
 import Enum.*;
 
 public class WaitQueue {
 
     public List<Request> waitRequestList;
-
-    public WaitQueue(){
+    public RoomList roomList;
+    public WaitQueue(RoomList roomList){
         waitRequestList=new LinkedList<Request>();
+        this.roomList = roomList;
     }
 
     public int size(){
@@ -19,13 +19,15 @@ public class WaitQueue {
 
     public void addRequest(Request request){
         waitRequestList.add(request);
+        System.out.println(roomList.findRoom(request.getCustomId()));
+        roomList.findRoom(request.getCustomId()).setState(State.WAIT);
         System.out.println("加入等待队列："+request.toString());
         System.out.println("等待队列长度："+waitRequestList.size());
     }
 
-    public boolean removeRequest(int roomId){
+    public boolean removeRequest(int customId){
         for (Request req:waitRequestList){
-            if(roomId==req.getRoomId()){
+            if(customId==req.getCustomId()){
                 waitRequestList.remove(req);
                 System.out.println("移出等待队列："+req.toString());
                 System.out.println("等待队列长度："+waitRequestList.size());
@@ -35,18 +37,18 @@ public class WaitQueue {
         return false;
     }
 
-    public Request findRequest(int roomId){
+    public Request findRequest(int customId){
         for (Request req:waitRequestList){
-            if(roomId==req.getRoomId()){
+            if(customId==req.getCustomId()){
                 return req;
             }
         }
         return null;
     }
 
-    public boolean changeRequestTemp(int roomId, double temp){
+    public boolean changeRequestTemp(int customId, double temp){
         for (Request req:waitRequestList){
-            if(roomId==req.getRoomId()){
+            if(customId==req.getCustomId()){
                 req.setTargetTemp(temp);
                 return true;
             }
@@ -54,9 +56,9 @@ public class WaitQueue {
         return false;
     }
 
-    public boolean changeRequestFanSpeed(int roomId, FanSpeed fanSpeed){
+    public boolean changeRequestFanSpeed(int customId, FanSpeed fanSpeed){
         for (Request req:waitRequestList){
-            if(roomId==req.getRoomId()){
+            if(customId==req.getCustomId()){
                 req.setFanSpeed(fanSpeed);
                 return true;
             }

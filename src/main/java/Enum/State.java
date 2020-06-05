@@ -1,5 +1,5 @@
 package Enum;
 
 public enum State {
-    ON,OFF,SET_MODE,HANG_UP
+    ON,OFF,DISCONNECT,CONNECT,SERVE,WAIT,HOLDON,SET_MODE,HANG_UP,
 }

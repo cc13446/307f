@@ -6,6 +6,7 @@ import java.util.Date;
 
 public class Log {
     private int logId;
+    private int customId;
     private int roomId;
     private ScheduleType scheduleType;
     private Mode mode;
@@ -18,18 +19,9 @@ public class Log {
     public Log() {
 
     }
-    public Log(int roomId, ScheduleType scheduleType, Mode mode, FanSpeed fanSpeed, double currentTemp, double targetTemp, double fee, double feeRate) {
-        this.roomId = roomId;
-        this.scheduleType = scheduleType;
-        this.mode = mode;
-        this.fanSpeed = fanSpeed;
-        this.currentTemp = currentTemp;
-        this.targetTemp = targetTemp;
-        this.fee = fee;
-        this.feeRate = feeRate;
-    }
-    public Log(int logId, int roomId, ScheduleType scheduleType, Mode mode, FanSpeed fanSpeed, double currentTemp, double targetTemp, double fee, double feeRate) {
-        this.logId = logId;
+
+    public Log(int customId, int roomId, ScheduleType scheduleType, Mode mode, FanSpeed fanSpeed, double currentTemp, double targetTemp, double fee, double feeRate) {
+        this.customId = customId;
         this.roomId = roomId;
         this.scheduleType = scheduleType;
         this.mode = mode;
@@ -40,6 +32,13 @@ public class Log {
         this.feeRate = feeRate;
     }
 
+    public int getCustomId() {
+        return customId;
+    }
+
+    public void setCustomId(int customId) {
+        this.customId = customId;
+    }
 
     public int getLogId() {
         return logId;

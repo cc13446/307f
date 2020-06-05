@@ -5,7 +5,7 @@ import Enum.*;
 
 public class Request {
     //请求唯一ID
-    private int ID;
+    private int customId;
 
     private int roomId;
 
@@ -17,22 +17,22 @@ public class Request {
 
     private Mode targetMode;
 
-    public Request(int roomId,double targetTemp,FanSpeed fanSpeed,long during,Mode targetMode){
-        this.roomId=roomId;
-        this.targetTemp=targetTemp;
-        this.fanSpeed=fanSpeed;
-        this.during=during;
-        this.targetMode=targetMode;
+    public Request(int customId, double targetTemp, FanSpeed fanSpeed, long during, Mode targetMode) {
+        this.customId = customId;
+        this.targetTemp = targetTemp;
+        this.fanSpeed = fanSpeed;
+        this.during = during;
+        this.targetMode = targetMode;
     }
 
-
-    public int getID() {
-        return ID;
+    public int getCustomId() {
+        return customId;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setCustomId(int customId) {
+        this.customId = customId;
     }
+
     public int getRoomId() {
         return roomId;
     }
@@ -76,7 +76,8 @@ public class Request {
     @Override
     public String toString() {
         return "Request{" +
-                "roomId=" + roomId +
+                "customId=" + customId +
+                ", roomId=" + roomId +
                 ", targetTemp=" + targetTemp +
                 ", fanSpeed=" + fanSpeed +
                 ", during=" + during +
