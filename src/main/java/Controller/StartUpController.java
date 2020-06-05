@@ -2,10 +2,9 @@ package Controller;
 
 import Enum.*;
 import MyHttpHandler.FanHttpHandler;
-import MyHttpHandler.RequestOnHandler;
+import MyHttpHandler.RequestOnAndOffHandler;
 import MyHttpHandler.RoomInitHttpHandler;
 import MyHttpServe.HttpToServe;
-import app.Request;
 import app.Scheduler;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -61,7 +60,7 @@ public class StartUpController {
         List<HttpHandler> handlerList=new ArrayList<HttpHandler>(Arrays.asList(
                 new FanHttpHandler(useController),
                 new RoomInitHttpHandler(useController),
-                new RequestOnHandler(useController)
+                new RequestOnAndOffHandler(useController)
                 ));
         List<String> urlList=new ArrayList<String>(Arrays.asList(
                 "/room/fan",
