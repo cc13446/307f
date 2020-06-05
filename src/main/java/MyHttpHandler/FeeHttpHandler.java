@@ -10,6 +10,7 @@ public class FeeHttpHandler implements HttpHandler {
     private UseController useController;
 
     public FeeHttpHandler(UseController useController){
+        super();
         this.useController=useController;
     }
 
