@@ -1,6 +1,6 @@
 package Controller;
 
-import Enum.FanSpeed;
+import Enum.*;
 import app.Request;
 import app.Room;
 import app.Scheduler;
@@ -35,5 +35,9 @@ public class UseController {
 
     public void addRoom(int roomID, double currentTemp, double initTemp) {
         scheduler.addRoom(roomID, currentTemp, initTemp);
+    }
+
+    public Mode getMode(){
+        return scheduler.getDefaultMode();
     }
 }

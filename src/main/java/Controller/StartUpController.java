@@ -2,11 +2,17 @@ package Controller;
 
 import Enum.*;
 import MyHttpHandler.FanHttpHandler;
+import MyHttpHandler.RequestOnHandler;
+import MyHttpHandler.RoomInitHttpHandler;
 import MyHttpServe.HttpToServe;
 import app.Request;
 import app.Scheduler;
+import com.sun.net.httpserver.HttpHandler;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class StartUpController {
     private Scheduler scheduler;
@@ -39,20 +45,31 @@ public class StartUpController {
         useController = new UseController(scheduler);
         checkRoomStateController = new CheckRoomStateController(scheduler);
         // test
-        Request request1=new Request(1,35,FanSpeed.LOW,1000, Mode.FAN);
-        scheduler.dealWithRequest(request1);
-        Request request2=new Request(2,40,FanSpeed.LOW,100,Mode.FAN);
-        scheduler.dealWithRequest(request2);
-        Request request3=new Request(3,40,FanSpeed.LOW,100,Mode.FAN);
-        scheduler.dealWithRequest(request3);
-        Request request4=new Request(4,40,FanSpeed.MEDIUM,100,Mode.FAN);
-        scheduler.dealWithRequest(request4);
-        Request request5=new Request(5,40,FanSpeed.MEDIUM,100,Mode.FAN);
-        scheduler.dealWithRequest(request5);
+//        Request request1=new Request(1,35,FanSpeed.LOW,1000, Mode.FAN);
+//        scheduler.dealWithRequest(request1);
+//        Request request2=new Request(2,40,FanSpeed.LOW,100,Mode.FAN);
+//        scheduler.dealWithRequest(request2);
+//        Request request3=new Request(3,40,FanSpeed.LOW,100,Mode.FAN);
+//        scheduler.dealWithRequest(request3);
+//        Request request4=new Request(4,40,FanSpeed.MEDIUM,100,Mode.FAN);
+//        scheduler.dealWithRequest(request4);
+//        Request request5=new Request(5,40,FanSpeed.MEDIUM,100,Mode.FAN);
+//        scheduler.dealWithRequest(request5);
 
-        FanHttpHandler fanHttpHandler = new FanHttpHandler(useController);
-        HttpToServe fanServe = new HttpToServe("/room/fan", 80);
-        fanServe.beginServe(fanHttpHandler);
+        HttpToServe fanServe = new HttpToServe(8080);
+
+        List<HttpHandler> handlerList=new ArrayList<HttpHandler>(Arrays.asList(
+                new FanHttpHandler(useController),
+                new RoomInitHttpHandler(useController),
+                new RequestOnHandler(useController)
+                ));
+        List<String> urlList=new ArrayList<String>(Arrays.asList(
+                "/room/fan",
+                "/room/initial",
+                "/room/service"
+        ));
+
+        fanServe.beginServe(urlList,handlerList);
 
         return true;
     }

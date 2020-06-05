@@ -74,8 +74,13 @@ public class Scheduler {
         return FEE_RATE_LOW;
     }
 
+    public Mode getDefaultMode(){
+        return defaultMode;
+    }
+
     public void addRoom(int roomID, double currentTemp, double initTemp) {
         roomList.addRoom(roomID, currentTemp, initTemp);
+        System.out.println("hello");
     }
 
     public void changeFanSpeed(int roomId, FanSpeed fanSpeed){
