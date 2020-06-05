@@ -28,6 +28,18 @@ public class UseController {
         scheduler.dealWithRequestOff(roomID);
     }
 
+    public void requestEnd(int ID){
+        if (null!=scheduler.waitQueue.findRequest(ID)){
+            scheduler.waitQueue.removeRequest(ID);
+            scheduler.schedule();
+        }
+        if (null!=scheduler.serveQueue.findRequest(ID)){
+            scheduler.serveQueue.removeRequest(ID);
+            scheduler.schedule();
+        }
+        scheduler.removeRoom(ID);
+    }
+
     public double requestFee(int roomID) {
         Room room = scheduler.roomList.findRoom(roomID);
         return room.getFee();

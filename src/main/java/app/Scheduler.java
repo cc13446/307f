@@ -83,6 +83,11 @@ public class Scheduler {
         System.out.println("Scheduler addRoom");
     }
 
+    public void removeRoom(int ID){
+        roomList.removeRoom(ID);
+        System.out.println("removeRoom");
+    }
+
     public void changeFanSpeed(int roomId, FanSpeed fanSpeed){
         Request req=serveQueue.findRequest(roomId);
         if (req!=null){
