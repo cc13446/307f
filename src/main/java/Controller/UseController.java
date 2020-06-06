@@ -1,5 +1,7 @@
 package Controller;
 
+import Domain.Request;
+import Domain.Room;
 import Enum.*;
 import app.*;
 

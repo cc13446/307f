@@ -1,4 +1,4 @@
-package app;
+package Domain;
 
 import java.util.Date;
 
@@ -7,6 +7,7 @@ public class Invoice {
     private Date dateOut;
     private double totalFee;
     private int roomId;
+    private int customId;
 
     public Date getDateIn() {
         return dateIn;
@@ -38,5 +39,13 @@ public class Invoice {
 
     public void setRoomId(int roomId) {
         this.roomId = roomId;
+    }
+
+    public int getCustomId() {
+        return customId;
+    }
+
+    public void setCustomId(int customId) {
+        this.customId = customId;
     }
 }

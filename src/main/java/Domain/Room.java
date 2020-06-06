@@ -1,4 +1,4 @@
-package app;
+package Domain;
 
 import Enum.*;
 
@@ -91,15 +91,16 @@ public class Room {
         this.currentTemp = currentTemp;
     }
 
-    public Room(int customId, int roomID, double currentTemp, double targetTemp) {
+    public Room(int customId, int roomID, double currentTemp, double targetTemp, FanSpeed defaultFanSpeed, double defaultFeeRate) {
         this.customId = customId;
         this.state = State.OFF;
         this.roomID = roomID;
         this.currentTemp = currentTemp;
         this.targetTemp = targetTemp;
         this.fee = 0;
-        this.fanSpeed=FanSpeed.MEDIUM;
+        this.fanSpeed= defaultFanSpeed;
         this.duration=0;
+        this.feeRate = defaultFeeRate;
         System.out.println("Create room " + roomID + " with CurrentTemp:" + currentTemp );
     }
 

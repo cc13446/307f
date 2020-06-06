@@ -1,17 +1,25 @@
 package Controller;
 
+import Dao.LogDao;
+import Domain.DetailBillItem;
+import Domain.Log;
 import app.BillServent;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 public class PrintDetailBillController {
-    private BillServent billServant=new BillServent();
+    private LogDao logDao;
+    private BillServent billServant;
 
-    public void CreateDetailBill(int roomId, Date dateIn, Date dateOut){
-        billServant.CreateDetailBill(roomId,dateIn,dateOut);
+    public PrintDetailBillController(LogDao logDao) {
+        this.logDao = logDao;
+        this.billServant = new BillServent(logDao);
     }
-    public void PrintDetailBill(int RoomId)throws IOException{
-        billServant.PrintDetailBill(RoomId);
+
+    public List<DetailBillItem> CreateDetailBill(int customID){
+        return billServant.CreateDetailBill(customID);
+
     }
 }

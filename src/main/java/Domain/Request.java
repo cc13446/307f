@@ -1,4 +1,4 @@
-package app;
+package Domain;
 
 import java.util.Date;
 import Enum.*;

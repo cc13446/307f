@@ -2,6 +2,8 @@ package app;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import Domain.Room;
 import Enum.*;
 
 public class RoomList {
@@ -11,8 +13,8 @@ public class RoomList {
         totalRoomList = new ArrayList<Room>();
     }
 
-    public void addRoom(int customId,int roomID, double currentTemp, double targetTemp) {
-        Room room = new Room(customId, roomID, currentTemp, targetTemp);
+    public void addRoom(int customId,int roomID, double currentTemp, double targetTemp,  FanSpeed defaultFanSpeed, double defaultFeeRate) {
+        Room room = new Room(customId, roomID, currentTemp, targetTemp, defaultFanSpeed, defaultFeeRate);
         System.out.println(room);
         totalRoomList.add(room);
     }

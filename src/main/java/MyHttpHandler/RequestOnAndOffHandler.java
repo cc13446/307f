@@ -1,7 +1,7 @@
 package MyHttpHandler;
 
 import Controller.UseController;
-import app.Request;
+import Domain.Request;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -9,8 +9,6 @@ import net.sf.json.JSONObject;
 
 import java.io.*;
 import Enum.*;
-
-import javax.persistence.EnumType;
 
 public class RequestOnAndOffHandler implements HttpHandler {
     private UseController useController;

@@ -1,7 +1,6 @@
 package Controller;
 
 import app.CheckRoomStateServant;
-import app.Room;
 import app.RoomStateForm;
 import app.Scheduler;
 

@@ -1,10 +1,9 @@
 package Dao;
 
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import Domain.Log;
@@ -53,7 +52,7 @@ public class LogDao {
         query.setParameter(1, roomId);
         query.setParameter(2, dateIn);
         query.setParameter(3, dateOut);
-        query.setParameter(4, ScheduleType.CLOSE);
+        query.setParameter(4, ScheduleType.REQUEST_OFF);
         double result = (double)query.list().get(0);
         tx.commit();
         session.close();
@@ -67,14 +66,14 @@ public class LogDao {
         query.setParameter(1, roomId);
         query.setParameter(2, dateIn);
         query.setParameter(3, dateOut);
-        query.setParameter(4, ScheduleType.CLOSE);
+        query.setParameter(4, ScheduleType.REQUEST_OFF);
         Long result = (Long)query.list().get(0);
         tx.commit();
         session.close();
         return result.intValue();
     }
 
-    public int QuerySchedulTimes(int roomId, Date dateIn, Date dateOut){
+    public int QuerySchedulerTimes(int roomId, Date dateIn, Date dateOut){
         Session session = HibernateUtils.openSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery("select count(*) from Log where roomId = ?1 and time >= ?2 and time <= ?3 and (scheduleType = ?4 or scheduleType = ?5) order by time");
@@ -82,7 +81,7 @@ public class LogDao {
         query.setParameter(2, dateIn);
         query.setParameter(3, dateOut);
         query.setParameter(4, ScheduleType.CLOSE);
-        query.setParameter(5, ScheduleType.NEW_REQUEST);
+        query.setParameter(5, ScheduleType.OPEN);
         Long result = (Long)query.list().get(0);
         tx.commit();
         session.close();
@@ -117,30 +116,49 @@ public class LogDao {
         return result.intValue();
     }
     @SuppressWarnings("unchecked")
-    public ArrayList<Log> QueryLog(int roomId, Date dateIn, Date dateOut){
+    public LinkedList<Log> QueryOnOffLog(int roomId, Date dateIn, Date dateOut){
         Session session = HibernateUtils.openSession();
         Transaction tx = session.beginTransaction();
 
-        Query query = session.createQuery("from Log where roomId = ?1 and time >= ?2 and time <= ?3");
+        Query query = session.createQuery("from Log where roomId = ?1 and time >= ?2 and time <= ?3 and (scheduleType = ?4 or scheduleType = ?5) order by time");
         query.setParameter(1, roomId);
         query.setParameter(2, dateIn);
         query.setParameter(3, dateOut);
+        query.setParameter(4, ScheduleType.REQUEST_ON);
+        query.setParameter(5, ScheduleType.REQUEST_OFF);
         List<Log> list = query.list();
         tx.commit();
         session.close();
-        return (ArrayList<Log>)list;
+        return (LinkedList<Log>)list;
     }
     @SuppressWarnings("unchecked")
-    public ArrayList<Log> QueryLog(int customId){
+    public int QueryCustomNumber(int roomId, Date dateIn, Date dateOut){
+        Session session = HibernateUtils.openSession();
+        Transaction tx = session.beginTransaction();
+        Query query = session.createQuery("select count(customId) from Log where roomId = ?1 and time >= ?2 and time <= ?3");
+        query.setParameter(1, roomId);
+        query.setParameter(2, dateIn);
+        query.setParameter(3, dateOut);
+        int result = 0;
+        List<Integer> list = query.list();
+        if(list != null && list.get(0) != null){
+            result = list.get(0);
+        }
+        tx.commit();
+        session.close();
+        return result;
+    }
+    @SuppressWarnings("unchecked")
+    public LinkedList<Log> QueryLog(int customId){
         Session session = HibernateUtils.openSession();
         Transaction tx = session.beginTransaction();
 
-        Query query = session.createQuery("from Log where customId = ?1");
+        Query query = session.createQuery("from Log where customId = ?1 order by time");
         query.setParameter(1, customId);
         List<Log> list = query.list();
         tx.commit();
         session.close();
-        return (ArrayList<Log>)list;
+        return (LinkedList<Log>)list;
     }
     @SuppressWarnings("unchecked")
     public int QueryMaxCustomId(){
@@ -152,6 +170,64 @@ public class LogDao {
         if(list != null && list.get(0) != null){
             result = list.get(0);
         }
+        tx.commit();
+        session.close();
+        return result;
+    }
+    @SuppressWarnings("unchecked")
+    public int QueryCustomId(int roomId){
+        Session session = HibernateUtils.openSession();
+        Transaction tx = session.beginTransaction();
+        Query query = session.createQuery("select max(customId) from Log where roomId = ?1 ");
+        query.setParameter(1,roomId);
+        int result = 0;
+        List<Integer> list = query.list();
+        if(list != null && list.get(0) != null){
+            result = list.get(0);
+        }
+        tx.commit();
+        session.close();
+        return result;
+    }
+    @SuppressWarnings("unchecked")
+    public Date QueryRequestDateIn(int customId){
+        Session session = HibernateUtils.openSession();
+        Transaction tx = session.beginTransaction();
+        Query query = session.createQuery("select max(time) from Log where customId = ?1 and scheduleType = ?2");
+        query.setParameter(1,customId);
+        query.setParameter(2,ScheduleType.REQUEST_ON);
+        Date result = null;
+        List<Date> list = query.list();
+        if(list != null && list.get(0) != null){
+            result = list.get(0);
+        }
+        tx.commit();
+        session.close();
+        return result;
+    }
+    @SuppressWarnings("unchecked")
+    public Date QueryRequestDateOut(int customId){
+        Session session = HibernateUtils.openSession();
+        Transaction tx = session.beginTransaction();
+        Query query = session.createQuery("select max(time) from Log where customId = ?1 and scheduleType = ?2");
+        query.setParameter(1,customId);
+        query.setParameter(2,ScheduleType.REQUEST_OFF);
+        Date result = null;
+        List<Date> list = query.list();
+        if(list != null && list.get(0) != null){
+            result = list.get(0);
+        }
+        tx.commit();
+        session.close();
+        return result;
+    }
+    public double QueryTotalFee(int customId){
+        Session session = HibernateUtils.openSession();
+        Transaction tx = session.beginTransaction();
+        Query query = session.createQuery("select sum(fee) from Log where customId = ?1 and scheduleType = ?2");
+        query.setParameter(1, customId);
+        query.setParameter(2, ScheduleType.CLOSE);
+        double result = (double)query.list().get(0);
         tx.commit();
         session.close();
         return result;

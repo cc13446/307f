@@ -1,52 +1,30 @@
 package Controller;
 
-import app.Report;
-import app.ReportForm;
+import Dao.LogDao;
+import Domain.Report;
+import Domain.ReportForm;
 import app.ReportServant;
 import Enum.*;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 
 public class PrintReportController {
-    private ReportServant reportServant = new ReportServant(new Report());//报表服务对象
+    private LogDao logDao;
 
 
     //构造方法
-    public PrintReportController() {
-
+    public PrintReportController(LogDao logDao) {
+        this.logDao = logDao;
     }
 
     //生成报表对象
-    public ArrayList<ReportForm> QueryReport(ArrayList<Integer> listRoomId, TypeReport typeReport, Date date) {
-        reportServant = new ReportServant(new Report(typeReport));
-        return reportServant.QueryReport(listRoomId, date);
+    public LinkedList<ReportForm> QueryReport(LinkedList<Integer> listRoomId, Report report) {
+        ReportServant reportServant = new ReportServant(report,logDao);
+        return reportServant.QueryReport(listRoomId);
     }
 
-    //将报表打印到文件中
-    public boolean PrintReport() {
-        return reportServant.PrintReport();
-    }
 
-    //get方法
-    public ReportServant getReportServant() {
-        return reportServant;
-    }
 
-    //set方法
-    public void setReportServant(ReportServant reportServant) {
-        this.reportServant = reportServant;
-    }
-
-//    //main函数
-//    public static void main(String args[]) {
-//        PrintReportController printReportController = new PrintReportController();
-//        ArrayList<Integer> listRoomId = new ArrayList<>();
-//        for (int i = 101; i < 120; i++)
-//            listRoomId.add(i);
-//
-//        printReportController.QueryReport(listRoomId, TypeReport.ANNUAL, new Date());
-//        if (!printReportController.PrintReport())
-//            System.out.println("error");
-//    }
 }

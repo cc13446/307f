@@ -1,20 +1,19 @@
 package Controller;
 
+import Dao.LogDao;
 import app.BillServent;
-
-import javax.xml.crypto.Data;
-import java.io.IOException;
-import java.util.Date;
+import Domain.Invoice;
 
 public class PrintBillController {
-    private BillServent billServent=new BillServent();
+    private LogDao logDao;
+    private BillServent billServant;
 
-    public void CreateInvoice(int RoomId, Date dateIn, Date dateOut){
-        billServent.CreateInvoice(RoomId,dateIn,dateOut);
-
-
+    public PrintBillController(LogDao logDao) {
+        this.logDao = logDao;
+        billServant =new BillServent(logDao);
     }
-    public void PrintInvoice(int RoomId, Date dateIn, Date dateOut) throws IOException {
-        billServent.PrintInvoice(RoomId,dateIn,dateOut);
+    public Invoice CreateInvoice(int RoomId){
+       return billServant.CreateInvoice(RoomId);
+
     }
 }

@@ -1,9 +1,10 @@
 package app;
 
 import Dao.LogDao;
-import Enum.FanSpeed;
-import Enum.Mode;
-import Enum.State;
+import Domain.Log;
+import Domain.Request;
+import Domain.Room;
+import Enum.*;
 
 public class Scheduler {
 
@@ -85,7 +86,7 @@ public class Scheduler {
     }
 
     public void addRoom(int customId, int roomID, double currentTemp, double targetTemp) {
-        roomList.addRoom(customId,roomID, currentTemp, targetTemp);
+        roomList.addRoom(customId,roomID, currentTemp, targetTemp, FanSpeed.MEDIUM, FEE_RATE_MID);
         System.out.println("Scheduler addRoom");
     }
 
@@ -119,6 +120,8 @@ public class Scheduler {
     }
 
     public void dealWithRequest(Request request){
+        Room room = roomList.findRoom(request.getCustomId());
+        logDao.storeLog(new Log(request.getCustomId(),request.getRoomId(), ScheduleType.REQUEST_ON, request.getTargetMode(), request.getFanSpeed(), room.getCurrentTemp(), request.getTargetTemp(), room.getFee(), room.getFeeRate()));
         waitQueue.addRequest(request);
         System.out.println("dealWithRequest(Request request)");
         schedule();
@@ -126,6 +129,8 @@ public class Scheduler {
 
     public void dealWithRequestOff(int customId){
         Request req=serveQueue.findRequest(customId);
+        Room room = roomList.findRoom(customId);
+        logDao.storeLog(new Log(req.getCustomId(),req.getRoomId(), ScheduleType.REQUEST_OFF, req.getTargetMode(), req.getFanSpeed(), room.getCurrentTemp(), req.getTargetTemp(), room.getFee(), room.getFeeRate()));
         if (req!=null){
             //在服务队列中，需要出队
             serveQueue.removeRequest(customId);
