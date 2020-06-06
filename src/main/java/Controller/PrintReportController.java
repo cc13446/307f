@@ -14,6 +14,7 @@ public class PrintReportController {
 
     //构造方法
     public PrintReportController() {
+
     }
 
     //生成报表对象

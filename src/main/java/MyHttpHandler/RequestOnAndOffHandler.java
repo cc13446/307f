@@ -37,7 +37,8 @@ public class RequestOnAndOffHandler implements HttpHandler {
             //
             //从id取得房间id
             //
-            useController.requestOn(new Request(id,targetTemperature, FanSpeed.values()[fanSpeed],0,useController.getMode()));
+
+            useController.requestOn(new Request(id,useController.findRoomId(id),targetTemperature, FanSpeed.values()[fanSpeed],0,useController.getMode()));
 
             Headers responseHeaders = exchange.getResponseHeaders();
             responseHeaders.set("Content-Type", "application/json");

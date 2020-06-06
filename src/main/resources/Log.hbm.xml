@@ -12,7 +12,8 @@
 		</id>
 		<!-- 建立类中的普通的属性和表的字段的对应 -->
 		<property name="roomId" column="roomId"   not-null="true"/>
-		<property name="scheduleType" column="scheduleType"  not-null="true">
+		<property name="customId" column="customId"   not-null="true"/>
+		<property name="scheduleType" column="scheduleType" not-null="true">
 			<type name="org.hibernate.type.EnumType">
 				<param name="enumClass">Enum.ScheduleType</param>
 				<param name="type">12</param>

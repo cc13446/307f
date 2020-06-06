@@ -1,5 +1,6 @@
 package app;
 
+import Dao.LogDao;
 import Enum.FanSpeed;
 import Enum.Mode;
 import Enum.State;
@@ -25,21 +26,26 @@ public class Scheduler {
     public WaitQueue waitQueue;
 
     public ServeQueue serveQueue;
+    public HoldOnQueue holdOnQueue;
 
     private final int MAX_SERVE_QUEUE_SIZE;
 
     public RoomList roomList;
 
-    public Scheduler(double feeRateHigh, double feeRateMid, double feeRateLow){
+    public LogDao logDao;
+
+    public Scheduler(double feeRateHigh, double feeRateMid, double feeRateLow, LogDao logDao){
         FEE_RATE_HIGH=feeRateHigh;
         FEE_RATE_MID=feeRateMid;
         FEE_RATE_LOW=feeRateLow;
         MAX_SERVE_QUEUE_SIZE=3;
 
         state=State.OFF;
-        waitQueue=new WaitQueue();
-        serveQueue=new ServeQueue();
         roomList=new RoomList();
+        waitQueue=new WaitQueue(FEE_RATE_HIGH, FEE_RATE_MID, FEE_RATE_LOW,roomList,logDao);
+        this.logDao = logDao;
+        serveQueue=new ServeQueue(FEE_RATE_HIGH, FEE_RATE_MID, FEE_RATE_LOW, this,logDao,roomList);
+        holdOnQueue=new HoldOnQueue(FEE_RATE_HIGH, FEE_RATE_MID, FEE_RATE_LOW, logDao,roomList);
     }
 
     public void setState(State state) {
@@ -78,8 +84,8 @@ public class Scheduler {
         return defaultMode;
     }
 
-    public void addRoom(int roomID, double currentTemp, double initTemp) {
-        roomList.addRoom(roomID, currentTemp, initTemp);
+    public void addRoom(int customId, int roomID, double currentTemp, double initTemp) {
+        roomList.addRoom(customId,roomID, currentTemp, initTemp);
         System.out.println("Scheduler addRoom");
     }
 
@@ -88,70 +94,65 @@ public class Scheduler {
         System.out.println("removeRoom");
     }
 
-    public void changeFanSpeed(int roomId, FanSpeed fanSpeed){
-        Request req=serveQueue.findRequest(roomId);
-        if (req!=null){
-            //在服务队列中
-            req.setFanSpeed(fanSpeed);
-            schedule();
-            return;
+    public void changeFanSpeed(int customId, FanSpeed fanSpeed){
+        if(!serveQueue.changeRequestFanSpeed(customId, fanSpeed) && !waitQueue.changeRequestFanSpeed(customId, fanSpeed)){
+            holdOnQueue.changeRequestFanSpeed(customId, fanSpeed);
         }
-        req=waitQueue.findRequest(roomId);
-        if (req!=null){
-            //在等待队列中
-            req.setFanSpeed(fanSpeed);
-            schedule();
-        }
+        schedule();
     }
 
-    public void changeTargetTemp(int roomId, double temp){
-        Request req=serveQueue.findRequest(roomId);
-        if (null!=req){
-            req.setTargetTemp(temp);
-        }
-        req=waitQueue.findRequest(roomId);
-        if (null!=req){
-            req.setTargetTemp(temp);
+    public void changeTargetTemp(int customId, double temp){
+        if(!serveQueue.changeRequestTemp(customId, temp) && !waitQueue.changeRequestTemp(customId, temp)){
+            holdOnQueue.changeRequestTemp(customId, temp);
         }
     }
 
     public void dealWithRequest(Request request){
         waitQueue.addRequest(request);
+        System.out.println("dealWithRequest(Request request)");
         schedule();
     }
 
-    public void dealWithRequestOff(int roomId){
-        Request req=serveQueue.findRequest(roomId);
+    public void dealWithRequestOff(int customId){
+        Request req=serveQueue.findRequest(customId);
         if (req!=null){
             //在服务队列中，需要出队
-            serveQueue.removeRequest(roomId);
+            serveQueue.removeRequest(customId);
             schedule();
         }
-        req=waitQueue.findRequest(roomId);
+        req=waitQueue.findRequest(customId);
         if (req!=null){
             //在等待队列中
-            waitQueue.removeRequest(roomId);
+            waitQueue.removeRequest(customId);
+        }
+        req=holdOnQueue.findReqeust(customId);
+        if (req!=null){
+            //在等待队列中
+            holdOnQueue.removeRequest(customId);
         }
     }
 
     public void schedule(){
+        //服务对象数小于上限
         if (serveQueue.size()<MAX_SERVE_QUEUE_SIZE){
-            //服务对象数小于上限
             Request req = waitQueue.getFastestFanSpeedRequest();
+            // 等待队列中没有请求
             if(req == null){
                 return;
             }
-            waitQueue.removeRequest(req.getRoomId());
+            waitQueue.removeRequest(req.getCustomId());
             serveQueue.addRequest(req);
+            // 启动一个Servant
+
         }else{
             //服务对象数大于等于上限
             Request serveReq=serveQueue.getSlowestFanSpeedRequest();
             Request waitReq=waitQueue.getFastestFanSpeedRequest();
             if (waitReq.getFanSpeed().compareTo(serveReq.getFanSpeed())>0){
                 //等待队列中有风速更快的，触发优先级调度
-                serveQueue.removeRequest(serveReq.getRoomId());
+                serveQueue.removeRequest(serveReq.getCustomId());
                 waitQueue.addRequest(serveReq);
-                waitQueue.removeRequest(waitReq.getRoomId());
+                waitQueue.removeRequest(waitReq.getCustomId());
                 serveQueue.addRequest(waitReq);
                 schedule();
             }else if(waitReq.getFanSpeed().compareTo(serveReq.getFanSpeed())==0){
@@ -160,26 +161,21 @@ public class Scheduler {
                     @Override
                     public void run() {
                         try {
-                            Thread.sleep(2000);
-                            if (null!=serveQueue.findRequest(serveReq.getRoomId())){
-                                System.out.println("2s后");
-                                serveQueue.removeRequest(serveReq.getRoomId());
+                            Thread.sleep(5000); //等改成两分钟
+                            if (null!=serveQueue.findRequest(serveReq.getCustomId())){
+                                System.out.println("5s后");
+                                serveQueue.removeRequest(serveReq.getCustomId());
                                 waitQueue.addRequest(serveReq);
                                 Request nowWaitReq=waitQueue.getFastestFanSpeedRequest();
-                                waitQueue.removeRequest(nowWaitReq.getRoomId());
+                                waitQueue.removeRequest(nowWaitReq.getCustomId());
                                 serveQueue.addRequest(nowWaitReq);
                                 schedule();
-                            }else{
-
                             }
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
                 }).start();
-
-            }else{
-
             }
         }
     }

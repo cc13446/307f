@@ -12,7 +12,6 @@ import Enum.*;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.junit.Test;
 import utils.HibernateUtils;
 /*
  * 有关日志的说明：
@@ -34,30 +33,6 @@ import utils.HibernateUtils;
  * 同时2时刻记录的温度和费用为2时刻当时的温度和费用，其他属性都为更改温度之后的属性。
  */
 public class LogDao {
-
-    @Test
-    public void test() throws ParseException {
-        // 1. 存储测试
-//        for(int i = 3; i < 8; i++) {
-//            Log log = new Log(1, ScheduleType.CLOSE, Mode.COLD, FanSpeed.HIGH, 23.2, 30.2, i, 1.4);
-//            storeLog(log);
-//        }
-
-        // 2. 查询测试
-//        ArrayList<Log> temp = QueryLog(1, format.parse("2020-06-03 10:41:00"), format.parse("2020-06-03 11:07:23"));
-//        for(Log l : temp){
-//            System.out.println(l);
-//        }
-
-        // 3. 查询总费用测试
-//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        System.out.println(QueryTotalFee(1, format.parse("2020-06-03 10:41:00"), format.parse("2020-06-03 11:07:23")));
-
-        // 4. 查询开关次数
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        System.out.println(QueryTurnTimes(1, format.parse("2020-06-03 10:41:00"), format.parse("2020-06-03 11:07:23")));
-
-    }
 
     public boolean storeLog(Log log){
         Session session = HibernateUtils.openSession();
@@ -154,5 +129,31 @@ public class LogDao {
         tx.commit();
         session.close();
         return (ArrayList<Log>)list;
+    }
+    @SuppressWarnings("unchecked")
+    public ArrayList<Log> QueryLog(int customId){
+        Session session = HibernateUtils.openSession();
+        Transaction tx = session.beginTransaction();
+
+        Query query = session.createQuery("from Log where customId = ?1");
+        query.setParameter(1, customId);
+        List<Log> list = query.list();
+        tx.commit();
+        session.close();
+        return (ArrayList<Log>)list;
+    }
+    @SuppressWarnings("unchecked")
+    public int QueryMaxCustomId(){
+        Session session = HibernateUtils.openSession();
+        Transaction tx = session.beginTransaction();
+        Query query = session.createQuery("select max(customId) from Log ");
+        int result = 0;
+        List<Integer> list = query.list();
+        if(list != null && list.get(0) != null){
+            result = list.get(0);
+        }
+        tx.commit();
+        session.close();
+        return result;
     }
 }
