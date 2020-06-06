@@ -1,6 +1,8 @@
 package app;
 
-import Enum.State;
+import Enum.*;
+
+import java.lang.annotation.Target;
 
 public class Room {
 
@@ -10,8 +12,35 @@ public class Room {
     private State state;
     private int roomID;
     private double currentTemp;
-    private double initTemp;
+    private double targetTemp;
     private double fee;
+    private double feeRate;
+    private FanSpeed fanSpeed;
+    private long duration;
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
+    }
+
+    public double getFeeRate() {
+        return feeRate;
+    }
+
+    public void setFeeRate(double feeRate) {
+        this.feeRate = feeRate;
+    }
+
+    public FanSpeed getFanSpeed() {
+        return fanSpeed;
+    }
+
+    public void setFanSpeed(FanSpeed fanSpeed) {
+        this.fanSpeed = fanSpeed;
+    }
 
     public int getCustomId() {
         return customId;
@@ -33,8 +62,12 @@ public class Room {
         return fee;
     }
 
-    public double getInitTemp() {
-        return initTemp;
+    public double getTargetTemp() {
+        return targetTemp;
+    }
+
+    public void setTargetTemp(double targetTemp) {
+        this.targetTemp = targetTemp;
     }
 
     public double getCurrentTemp() {
@@ -49,9 +82,6 @@ public class Room {
         this.roomID = roomID;
     }
 
-    public void setInitTemp(double initTemp) {
-        this.initTemp = initTemp;
-    }
 
     public void setFee(double fee) {
         this.fee = fee;
@@ -61,14 +91,16 @@ public class Room {
         this.currentTemp = currentTemp;
     }
 
-    public Room(int customId, int roomID, double currentTemp, double initTemp) {
+    public Room(int customId, int roomID, double currentTemp, double targetTemp) {
         this.customId = customId;
         this.state = State.OFF;
         this.roomID = roomID;
         this.currentTemp = currentTemp;
-        this.initTemp = initTemp;
+        this.targetTemp = targetTemp;
         this.fee = 0;
-        System.out.println("Create room " + roomID + " with CurrentTemp:" + currentTemp + " and initTemp:" + initTemp);
+        this.fanSpeed=FanSpeed.MEDIUM;
+        this.duration=0;
+        System.out.println("Create room " + roomID + " with CurrentTemp:" + currentTemp );
     }
 
     @Override
@@ -78,8 +110,11 @@ public class Room {
                 ", state=" + state +
                 ", roomID=" + roomID +
                 ", currentTemp=" + currentTemp +
-                ", initTemp=" + initTemp +
+                ", targetTemp=" + targetTemp +
                 ", fee=" + fee +
+                ", feeRate=" + feeRate +
+                ", fanSpeed=" + fanSpeed +
+                ", duration=" + duration +
                 '}';
     }
 }

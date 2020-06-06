@@ -15,7 +15,7 @@ import java.util.List;
 public class StartUpController {
     private Scheduler scheduler;
     private UseController useController;
-    private CheckRoomStateController checkRoomStateController;
+    public CheckRoomStateController checkRoomStateController;
     private PrintReportController printReportController;
     private PrintBillController printBillController;
     private PrintDetailBillController printDetailBillController;

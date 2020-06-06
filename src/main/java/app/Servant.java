@@ -117,6 +117,7 @@ public class Servant{
                     while(state == State.ON){
                         Thread.sleep(60000/80);
                         changeFee(80);
+                        room.setDuration(room.getDuration()+60000/80);
                         if (Math.abs(request.getTargetTemp() - room.getCurrentTemp()) < 0.1){
                             room.setState(State.HOLDON);
                             if(endServe()) {

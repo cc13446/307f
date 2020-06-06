@@ -84,8 +84,8 @@ public class Scheduler {
         return defaultMode;
     }
 
-    public void addRoom(int customId, int roomID, double currentTemp, double initTemp) {
-        roomList.addRoom(customId,roomID, currentTemp, initTemp);
+    public void addRoom(int customId, int roomID, double currentTemp, double targetTemp) {
+        roomList.addRoom(customId,roomID, currentTemp, targetTemp);
         System.out.println("Scheduler addRoom");
     }
 
@@ -98,12 +98,23 @@ public class Scheduler {
         if(!serveQueue.changeRequestFanSpeed(customId, fanSpeed) && !waitQueue.changeRequestFanSpeed(customId, fanSpeed)){
             holdOnQueue.changeRequestFanSpeed(customId, fanSpeed);
         }
+        Room room=roomList.findRoom(customId);
+        if (null!=room){
+            room.setFanSpeed(fanSpeed);
+            if (FanSpeed.HIGH==fanSpeed) room.setFeeRate(FEE_RATE_HIGH);
+            else if(FanSpeed.MEDIUM==fanSpeed) room.setFeeRate(FEE_RATE_MID);
+            else room.setFeeRate(FEE_RATE_LOW);
+        }
         schedule();
     }
 
     public void changeTargetTemp(int customId, double temp){
         if(!serveQueue.changeRequestTemp(customId, temp) && !waitQueue.changeRequestTemp(customId, temp)){
             holdOnQueue.changeRequestTemp(customId, temp);
+        }
+        Room room=roomList.findRoom(customId);
+        if (null!=room){
+            room.setTargetTemp(temp);
         }
     }
 
