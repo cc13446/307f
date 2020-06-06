@@ -11,11 +11,12 @@ import Enum.*;
 
 public class RoomInitHttpHandler implements HttpHandler {
     private UseController useController;
-    private static int roomNum=0;
+    private static int roomNum;
 
     public RoomInitHttpHandler(UseController useController){
         super();
         this.useController=useController;
+        roomNum = useController.getMaxCustomId() + 1;
     }
 
     @Override

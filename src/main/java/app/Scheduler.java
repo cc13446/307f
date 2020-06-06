@@ -26,12 +26,13 @@ public class Scheduler {
     public WaitQueue waitQueue;
 
     public ServeQueue serveQueue;
+    public HoldOnQueue holdOnQueue;
 
     private final int MAX_SERVE_QUEUE_SIZE;
 
     public RoomList roomList;
 
-    private LogDao logDao;
+    public LogDao logDao;
 
     public Scheduler(double feeRateHigh, double feeRateMid, double feeRateLow, LogDao logDao){
         FEE_RATE_HIGH=feeRateHigh;
@@ -44,6 +45,7 @@ public class Scheduler {
         waitQueue=new WaitQueue(FEE_RATE_HIGH, FEE_RATE_MID, FEE_RATE_LOW,roomList,logDao);
         this.logDao = logDao;
         serveQueue=new ServeQueue(FEE_RATE_HIGH, FEE_RATE_MID, FEE_RATE_LOW, this,logDao,roomList);
+        holdOnQueue=new HoldOnQueue(FEE_RATE_HIGH, FEE_RATE_MID, FEE_RATE_LOW, logDao,roomList);
     }
 
     public void setState(State state) {
@@ -93,14 +95,14 @@ public class Scheduler {
     }
 
     public void changeFanSpeed(int customId, FanSpeed fanSpeed){
-        if(!serveQueue.changeRequestFanSpeed(customId, fanSpeed)){
-            waitQueue.changeRequestFanSpeed(customId, fanSpeed);
+        if(!serveQueue.changeRequestFanSpeed(customId, fanSpeed) && !waitQueue.changeRequestFanSpeed(customId, fanSpeed)){
+            holdOnQueue.changeRequestFanSpeed(customId, fanSpeed);
         }
     }
 
     public void changeTargetTemp(int customId, double temp){
-        if(!serveQueue.changeRequestTemp(customId, temp)){
-            waitQueue.changeRequestTemp(customId, temp);
+        if(!serveQueue.changeRequestTemp(customId, temp) && !waitQueue.changeRequestTemp(customId, temp)){
+            holdOnQueue.changeRequestTemp(customId, temp);
         }
     }
 
@@ -121,6 +123,11 @@ public class Scheduler {
         if (req!=null){
             //在等待队列中
             waitQueue.removeRequest(customId);
+        }
+        req=holdOnQueue.findReqeust(customId);
+        if (req!=null){
+            //在等待队列中
+            holdOnQueue.removeRequest(customId);
         }
     }
 

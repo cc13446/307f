@@ -42,9 +42,11 @@ public class UseController {
     public double requestFee(int customId, double currentTemp) {
         Room room = scheduler.roomList.findRoom(customId);
         room.setCurrentTemp(currentTemp);
-        Request request = HoldOnQueue.findRequst(customId);
+        Request request = scheduler.holdOnQueue.findReqeust(customId);
+        System.out.println("待机重新调度" + request);
         if(request != null && Math.abs(room.getCurrentTemp() - request.getTargetTemp()) >= 1){
-            HoldOnQueue.removeRequst(customId);
+            System.out.println("待机重新调度");
+            scheduler.holdOnQueue.removeRequest(customId);
             scheduler.waitQueue.addRequest(request);
             scheduler.schedule();
         }
@@ -62,5 +64,12 @@ public class UseController {
 
     public Mode getMode(){
         return scheduler.getDefaultMode();
+    }
+    public int findRoomId(int customId){
+        return scheduler.roomList.findRoom(customId).getRoomID();
+    }
+
+    public int getMaxCustomId(){
+        return scheduler.logDao.QueryMaxCustomId();
     }
 }

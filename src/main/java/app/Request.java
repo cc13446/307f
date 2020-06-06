@@ -17,8 +17,9 @@ public class Request {
 
     private Mode targetMode;
 
-    public Request(int customId, double targetTemp, FanSpeed fanSpeed, long during, Mode targetMode) {
+    public Request(int customId, int roomId, double targetTemp, FanSpeed fanSpeed, long during, Mode targetMode) {
         this.customId = customId;
+        this.roomId = roomId;
         this.targetTemp = targetTemp;
         this.fanSpeed = fanSpeed;
         this.during = during;

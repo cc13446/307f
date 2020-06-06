@@ -142,4 +142,18 @@ public class LogDao {
         session.close();
         return (ArrayList<Log>)list;
     }
+    @SuppressWarnings("unchecked")
+    public int QueryMaxCustomId(){
+        Session session = HibernateUtils.openSession();
+        Transaction tx = session.beginTransaction();
+        Query query = session.createQuery("select max(customId) from Log ");
+        int result = 0;
+        List<Integer> list = query.list();
+        if(list != null && list.get(0) != null){
+            result = list.get(0);
+        }
+        tx.commit();
+        session.close();
+        return result;
+    }
 }

@@ -115,10 +115,10 @@ public class Servant{
             public void run() {
                 try {
                     while(state == State.ON){
-                        Thread.sleep(60000/40);
-                        changeFee(40);
+                        Thread.sleep(60000/80);
+                        changeFee(80);
                         System.out.println(fee);
-                        if (request.getTargetTemp() == room.getCurrentTemp()){
+                        if (Math.abs(request.getTargetTemp() - room.getCurrentTemp()) < 0.1){
                             room.setState(State.HOLDON);
                             if(endServe()) {
                                 notifyListenerEvents(new MyEventObject(request.getCustomId()));

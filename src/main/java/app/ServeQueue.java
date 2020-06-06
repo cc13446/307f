@@ -1,6 +1,5 @@
 package app;
 
-import java.io.IOException;
 import java.util.EventObject;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,7 +44,7 @@ public class ServeQueue {
             public void handleEvent(EventObject event) {
                 servantList.remove(servant);
                 serveRequestList.remove(request);
-                HoldOnQueue.addRequst(request);
+                scheduler.holdOnQueue.addRequest(request);
                 scheduler.schedule();
             }
         });
