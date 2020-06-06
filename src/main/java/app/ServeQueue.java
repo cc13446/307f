@@ -15,24 +15,28 @@ public class ServeQueue {
     public List<Request> serveRequestList;
     public List<Servant> servantList;
     private Scheduler scheduler;
+
     private final double FEE_RATE_HIGH;
     private final double FEE_RATE_MID;
     private final double FEE_RATE_LOW;
-
-    public ServeQueue(double FEE_RATE_HIGH, double FEE_RATE_MID, double FEE_RATE_LOW, Scheduler scheduler) {
+    private LogDao logDao;
+    private  RoomList roomList;
+    public ServeQueue(double FEE_RATE_HIGH, double FEE_RATE_MID, double FEE_RATE_LOW, Scheduler scheduler,LogDao logDao, RoomList roomList) {
         serveRequestList=new LinkedList<Request>();
         servantList = new LinkedList<Servant>();
         this.FEE_RATE_HIGH = FEE_RATE_HIGH;
         this.FEE_RATE_MID = FEE_RATE_MID;
         this.FEE_RATE_LOW = FEE_RATE_LOW;
         this.scheduler = scheduler;
+        this.logDao = logDao;
+        this.roomList = roomList;
     }
 
     public int size(){
         return serveRequestList.size();
     }
 
-    public void addRequest(Request request, LogDao logDao, RoomList roomList){
+    public void addRequest(Request request){
         serveRequestList.add(request);
         roomList.findRoom(request.getCustomId()).setState(State.SERVE);
         Servant servant = new Servant(FEE_RATE_HIGH, FEE_RATE_MID, FEE_RATE_LOW, request, logDao, roomList);
@@ -65,7 +69,7 @@ public class ServeQueue {
                 if(servant == null){
                     return false;
                 }
-                servant.setState(State.OFF);
+                servant.endServe();
                 servantList.remove(servant);
                 System.out.println("移出服务队列："+req.toString());
                 System.out.println("服务队列长度："+serveRequestList.size());
@@ -109,6 +113,8 @@ public class ServeQueue {
         for (Request req:serveRequestList){
             if(customId==req.getCustomId()){
                 req.setTargetTemp(temp);
+                Room room = roomList.findRoom(customId);
+                logDao.storeLog(new Log(req.getCustomId(),req.getRoomId(), ScheduleType.CHANGE_TEMP, req.getTargetMode(), req.getFanSpeed(), room.getCurrentTemp(), req.getTargetTemp(), room.getFee(),getFeeRate(req.getFanSpeed())));
                 return true;
             }
         }
@@ -122,11 +128,18 @@ public class ServeQueue {
         }
         Request request = servant.getRequest();
         request.setFanSpeed(fanSpeed);
-        switch (request.getFanSpeed().ordinal()){
-            case 0: servant.setFeeRate(FEE_RATE_LOW);break;
-            case 1: servant.setFeeRate(FEE_RATE_MID);break;
-            case 2: servant.setFeeRate(FEE_RATE_HIGH);break;
-        }
+        servant.setFeeRate(getFeeRate(fanSpeed));
+        Room room = roomList.findRoom(customId);
+        logDao.storeLog(new Log(request.getCustomId(),request.getRoomId(), ScheduleType.CHANGE_FAN_SPEED, request.getTargetMode(), request.getFanSpeed(), room.getCurrentTemp(), request.getTargetTemp(), room.getFee(),getFeeRate(request.getFanSpeed())));
+
         return true;
+    }
+
+    public double getFeeRate(FanSpeed fanSpeed){
+        switch (fanSpeed.ordinal()){
+            case 0: return FEE_RATE_LOW;
+            case 1: return FEE_RATE_MID;
+            default:return FEE_RATE_HIGH;
+        }
     }
 }

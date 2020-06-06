@@ -41,9 +41,9 @@ public class Scheduler {
 
         state=State.OFF;
         roomList=new RoomList();
-        waitQueue=new WaitQueue(roomList);
+        waitQueue=new WaitQueue(FEE_RATE_HIGH, FEE_RATE_MID, FEE_RATE_LOW,roomList,logDao);
         this.logDao = logDao;
-        serveQueue=new ServeQueue(FEE_RATE_HIGH, FEE_RATE_MID, FEE_RATE_LOW, this);
+        serveQueue=new ServeQueue(FEE_RATE_HIGH, FEE_RATE_MID, FEE_RATE_LOW, this,logDao,roomList);
     }
 
     public void setState(State state) {
@@ -133,7 +133,7 @@ public class Scheduler {
                 return;
             }
             waitQueue.removeRequest(req.getCustomId());
-            serveQueue.addRequest(req,logDao,roomList);
+            serveQueue.addRequest(req);
             // 启动一个Servant
 
         }else{
@@ -145,7 +145,7 @@ public class Scheduler {
                 serveQueue.removeRequest(serveReq.getCustomId());
                 waitQueue.addRequest(serveReq);
                 waitQueue.removeRequest(waitReq.getCustomId());
-                serveQueue.addRequest(waitReq,logDao,roomList);
+                serveQueue.addRequest(waitReq);
                 schedule();
             }else if(waitReq.getFanSpeed().compareTo(serveReq.getFanSpeed())==0){
                 //触发时间片轮转
@@ -160,7 +160,7 @@ public class Scheduler {
                                 waitQueue.addRequest(serveReq);
                                 Request nowWaitReq=waitQueue.getFastestFanSpeedRequest();
                                 waitQueue.removeRequest(nowWaitReq.getCustomId());
-                                serveQueue.addRequest(nowWaitReq,logDao,roomList);
+                                serveQueue.addRequest(nowWaitReq);
                                 schedule();
                             }
                         } catch (InterruptedException e) {
