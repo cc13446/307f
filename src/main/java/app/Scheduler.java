@@ -98,6 +98,7 @@ public class Scheduler {
         if(!serveQueue.changeRequestFanSpeed(customId, fanSpeed) && !waitQueue.changeRequestFanSpeed(customId, fanSpeed)){
             holdOnQueue.changeRequestFanSpeed(customId, fanSpeed);
         }
+        schedule();
     }
 
     public void changeTargetTemp(int customId, double temp){
