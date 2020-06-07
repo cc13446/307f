@@ -3,22 +3,26 @@ package app;
 import Enum.FanSpeed;
 import Enum.State;
 
-public class RoomStateForm {
-    private State state;
-    private double currentTemp;
-    private double targetTemp;
-    private FanSpeed fanSpeed;
-    private double feeRate;
-    private double fee;
-    private double duration;
+import java.io.Serializable;
 
-    public RoomStateForm(State state, double fee, double currentTemp) {
+public class RoomStateForm implements Serializable {
+    public int roomID;
+    public int customerID;
+    public int state;
+    public double currentTemp;
+    public double targetTemp;
+    public int fanSpeed;
+    public double feeRate;
+    public double fee;
+    public long duration;
+
+    public RoomStateForm(int state, double fee, double currentTemp) {
         this.state = state;
         this.fee = fee;
         this.currentTemp = currentTemp;
     }
 
-    public RoomStateForm(State state, double fee, double currentTemp, double targetTemp, double feeRate, double duration, FanSpeed fanSpeed) {
+    public RoomStateForm(int customerID,int roomId,int state, double fee, double currentTemp, double targetTemp, double feeRate, long duration, int fanSpeed) {
         this.state = state;
         this.fee = fee;
         this.currentTemp = currentTemp;
@@ -26,5 +30,20 @@ public class RoomStateForm {
         this.feeRate = feeRate;
         this.duration = duration;
         this.fanSpeed = fanSpeed;
+        this.customerID=customerID;
+        this.roomID=roomId;
+    }
+
+    @Override
+    public String toString() {
+        return "RoomStateForm{" +
+                "state=" + state +
+                ", currentTemp=" + currentTemp +
+                ", targetTemp=" + targetTemp +
+                ", fanSpeed=" + fanSpeed +
+                ", feeRate=" + feeRate +
+                ", fee=" + fee +
+                ", duration=" + duration +
+                '}';
     }
 }

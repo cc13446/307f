@@ -6,19 +6,21 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import net.sf.json.JSONObject;
 import Enum.*;
+
 import java.io.*;
 
-public class FanHttpHandler implements HttpHandler {
+public class FeeHttpHandler implements HttpHandler {
     private UseController useController;
 
-    public FanHttpHandler(UseController useController) {
+    public FeeHttpHandler(UseController useController){
         super();
-        this.useController = useController;
+        this.useController=useController;
     }
 
+    @Override
     public void handle(HttpExchange exchange) throws IOException {
         String requestMethod = exchange.getRequestMethod();
-        if (requestMethod.equalsIgnoreCase("POST")) {
+        if (requestMethod.equalsIgnoreCase("GET")) {
             System.out.println(exchange.getRequestURI());
             InputStream in = exchange.getRequestBody();
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
@@ -26,10 +28,18 @@ public class FanHttpHandler implements HttpHandler {
             JSONObject temp = JSONObject.fromObject(str);
             System.out.println("收到：" + temp);
             int id=temp.getInt("id");
-            int fanSpeed=temp.getInt("fanSpeed");
+            Double currentTemp=temp.getDouble("currentTemperature");
+            Double changeTemperature=temp.getDouble("changeTemperature");
 
-            useController.changeFanSpeed(id, FanSpeed.values()[fanSpeed]);
-
+            double fee = useController.requestFee(id, currentTemp);
+            State state = useController.requestState(id);
+            int roomState = 0;
+            switch (state){
+                case SERVE:roomState=0;break;
+                case WAIT:roomState=1;break;
+                case HOLDON:roomState=2;break;
+                default:roomState=2;break;
+            }
             Headers responseHeaders = exchange.getResponseHeaders();
             responseHeaders.set("Content-Type", "application/json");
             exchange.sendResponseHeaders(200, 0);
@@ -37,7 +47,11 @@ public class FanHttpHandler implements HttpHandler {
             OutputStream responseBody = exchange.getResponseBody();
             JSONObject json=new JSONObject();
             json.put("status",0);
-
+            JSONObject data=new JSONObject();
+            data.put("fee", fee);
+            data.put("roomState", roomState);
+            data.put("id", id);
+            json.put("data", data);
             responseBody.write(json.toString().getBytes());
             responseBody.close();
         }
