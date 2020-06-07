@@ -1,6 +1,7 @@
 package MyHttpHandler;
 
 import Controller.*;
+import Dao.LogDao;
 import Domain.DetailBillItem;
 import Domain.Invoice;
 import Domain.Report;
@@ -190,8 +191,10 @@ public class InnerHttpHandler implements HttpHandler {
         }
 
         JSONArray jsonArray=new JSONArray();
-        PrintReportController printReportController = startUpController.printReportController;
+//        PrintReportController printReportController = startUpController.printReportController;
+        PrintReportController printReportController = new PrintReportController(new LogDao());
         List<ReportForm> reportFormList = printReportController.QueryReport(roomList,report);
+
         for (ReportForm reportForm:reportFormList){
             JSONObject obj=new JSONObject();
             obj.put("roomId",reportForm.getRoomId());
