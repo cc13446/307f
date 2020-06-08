@@ -184,7 +184,6 @@ public class Scheduler {
                         if(!servant.getRRFlag()){
                             servant.setRRFlag(true);
                         }
-
                     }
                     else {
                         servant.setRRFlag(false);

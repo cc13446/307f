@@ -138,7 +138,6 @@ public class Servant{
                                 notifyListenerEvents(new MyEventObject(request.getCustomId()));
                                 return;
                             }
-
                         }
                         if(0 == duration && RRFlag){
                             room.setState(State.WAIT);

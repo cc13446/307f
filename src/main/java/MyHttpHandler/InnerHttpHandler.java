@@ -63,7 +63,6 @@ public class InnerHttpHandler implements HttpHandler {
                     break;
             }
 
-
             Headers responseHeaders = exchange.getResponseHeaders();
             responseHeaders.set("Content-Type", "application/json");
             exchange.sendResponseHeaders(200, 0);
