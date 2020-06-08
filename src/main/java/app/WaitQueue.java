@@ -5,6 +5,8 @@ import java.util.List;
 
 import Dao.LogDao;
 import Domain.Log;
+import Domain.Request;
+import Domain.Room;
 import Enum.*;
 
 public class WaitQueue {

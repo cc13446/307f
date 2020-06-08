@@ -15,10 +15,10 @@ import java.util.List;
 public class StartUpController {
     private Scheduler scheduler;
     private UseController useController;
-    private CheckRoomStateController checkRoomStateController;
-    private PrintReportController printReportController;
-    private PrintBillController printBillController;
-    private PrintDetailBillController printDetailBillController;
+    public CheckRoomStateController checkRoomStateController;
+    public PrintReportController printReportController;
+    public PrintBillController printBillController;
+    public PrintDetailBillController printDetailBillController;
     private double feeRateHigh;
     private double feeRateMid;
     private double feeRateLow;
@@ -46,9 +46,9 @@ public class StartUpController {
         useController = new UseController(scheduler);
         checkRoomStateController = new CheckRoomStateController(scheduler);
         // 三个控制器有问题
-        printDetailBillController = new PrintDetailBillController();
-        printBillController = new PrintBillController();
-        printReportController = new PrintReportController();
+        printDetailBillController = new PrintDetailBillController(logDao);
+        printBillController = new PrintBillController(logDao);
+        printReportController = new PrintReportController(logDao);
 
         HttpToServe clientServe = new HttpToServe(80);
 

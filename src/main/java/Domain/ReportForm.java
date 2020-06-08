@@ -1,14 +1,15 @@
-package app;
+package Domain;
 
 public class ReportForm {
+    private int roomId;//房间号
     private int turnTimes;//每个房间的开关次数
     private long useTime;//使用空调的时长
     private double totalFee;//总费用
     private int schedulerTimes;//被调度的次数
-    private int detailBillNumber;//详单数
+    private int customNumber;//详单数
     private int changeTempTimes;//调温次数
     private int changeFanSpeedTimes;//调风次数
-    private int roomId;//房间号
+
 
 
     //构造方法
@@ -16,14 +17,21 @@ public class ReportForm {
         turnTimes = 0;
         totalFee = 0;
         schedulerTimes = 0;
-        detailBillNumber = 0;
+        customNumber = 0;
         changeTempTimes = 0;
         changeFanSpeedTimes = 0;
         roomId = 0;
         useTime = 0;
     }
 
-    //get和set方法
+    public int getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
+    }
+
     public int getTurnTimes() {
         return turnTimes;
     }
@@ -34,10 +42,6 @@ public class ReportForm {
 
     public long getUseTime() {
         return useTime;
-    }
-
-    public String getStringUseTime() {
-        return useTime / 1000 / 3600 + "时" + useTime / 1000 / 60 % 60 + "分" + useTime / 1000 % 60 + "秒";
     }
 
     public void setUseTime(long useTime) {
@@ -60,12 +64,12 @@ public class ReportForm {
         this.schedulerTimes = schedulerTimes;
     }
 
-    public int getDetailBillNumber() {
-        return detailBillNumber;
+    public int getCustomNumber() {
+        return customNumber;
     }
 
-    public void setDetailBillNumber(int detailBillNumber) {
-        this.detailBillNumber = detailBillNumber;
+    public void setCustomNumber(int customNumber) {
+        this.customNumber = customNumber;
     }
 
     public int getChangeTempTimes() {
@@ -84,24 +88,17 @@ public class ReportForm {
         this.changeFanSpeedTimes = changeFanSpeedTimes;
     }
 
-    public int getRoomId() {
-        return roomId;
-    }
-
-    public void setRoomId(int roomId) {
-        this.roomId = roomId;
-    }
-
     @Override
     public String toString() {
-        return "roomId=" + roomId +
+        return "ReportForm{" +
+                "roomId=" + roomId +
                 ", turnTimes=" + turnTimes +
-                ", useTime=" + useTime / 1000 / 3600 + "时" + useTime / 1000 / 60 % 60 + "分" + useTime / 1000 % 60 + "秒" +
+                ", useTime=" + useTime +
                 ", totalFee=" + totalFee +
                 ", schedulerTimes=" + schedulerTimes +
-                ", detailBillNumber=" + detailBillNumber +
+                ", customNumber=" + customNumber +
                 ", changeTempTimes=" + changeTempTimes +
                 ", changeFanSpeedTimes=" + changeFanSpeedTimes +
-                '.';
+                '}';
     }
 }

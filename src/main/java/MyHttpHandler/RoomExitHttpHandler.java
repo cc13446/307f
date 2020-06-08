@@ -1,12 +1,10 @@
 package MyHttpHandler;
 
 import Controller.UseController;
-import app.Request;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import net.sf.json.JSONObject;
-import Enum.*;
 
 import java.io.*;
 

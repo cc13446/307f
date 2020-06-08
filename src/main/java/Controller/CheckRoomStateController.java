@@ -13,12 +13,7 @@ public class CheckRoomStateController {
         this.scheduler = scheduler;
     }
 
-    public void checkRoomState(List<Integer> roomList) {
-//        CheckRoomStateServant checkRoomStateServant = new CheckRoomStateServant();
-//        checkRoomStateServant.checkRoomState(roomList);
-        for (int roomID:roomList) {
-            RoomStateForm roomStateForm;
-            roomStateForm = CheckRoomStateServant.checkRoomState(roomID, scheduler);
-        }
+    public List<RoomStateForm> getRoomStateFormList(){
+        return new CheckRoomStateServant().getRoomStateFormList(scheduler);
     }
 }

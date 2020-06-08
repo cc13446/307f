@@ -1,10 +1,11 @@
 package app;
 import Domain.Log;
+import Domain.Request;
+import Domain.Room;
 import Enum.*;
 import Dao.LogDao;
 import Listener.MyEventListener;
 import Listener.MyEventObject;
-import org.junit.Test;
 
 public class Servant{
 
@@ -107,7 +108,7 @@ public class Servant{
 
     public boolean beginServe() throws InterruptedException {
         this.state = State.ON;
-        if(!storeLog(ScheduleType.NEW_REQUEST)){
+        if(!storeLog(ScheduleType.OPEN)){
             return false;
         }
         Thread t = new Thread(new Runnable() {
@@ -117,6 +118,7 @@ public class Servant{
                     while(state == State.ON){
                         Thread.sleep(60000/80);
                         changeFee(80);
+                        room.setDuration(room.getDuration()+60000/80);
                         if (Math.abs(request.getTargetTemp() - room.getCurrentTemp()) < 0.1){
                             room.setState(State.HOLDON);
                             if(endServe()) {

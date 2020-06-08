@@ -1,5 +1,7 @@
 package Controller;
 
+import Domain.Request;
+import Domain.Room;
 import Enum.*;
 import app.*;
 
@@ -57,9 +59,9 @@ public class UseController {
         return room.getState();
     }
 
-    public void addRoom(int customId, int roomID, double currentTemp, double initTemp) {
+    public void addRoom(int customId, int roomID, double currentTemp, double targetTemp) {
         System.out.println("useController addRoom");
-        scheduler.addRoom(customId,roomID, currentTemp, initTemp);
+        scheduler.addRoom(customId,roomID, currentTemp, targetTemp);
     }
 
     public Mode getMode(){

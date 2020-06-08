@@ -1,9 +1,10 @@
 package app;
 
 import Dao.LogDao;
-import Enum.FanSpeed;
-import Enum.Mode;
-import Enum.State;
+import Domain.Log;
+import Domain.Request;
+import Domain.Room;
+import Enum.*;
 
 public class Scheduler {
 
@@ -84,8 +85,8 @@ public class Scheduler {
         return defaultMode;
     }
 
-    public void addRoom(int customId, int roomID, double currentTemp, double initTemp) {
-        roomList.addRoom(customId,roomID, currentTemp, initTemp);
+    public void addRoom(int customId, int roomID, double currentTemp, double targetTemp) {
+        roomList.addRoom(customId,roomID, currentTemp, targetTemp, FanSpeed.MEDIUM, FEE_RATE_MID);
         System.out.println("Scheduler addRoom");
     }
 
@@ -98,6 +99,13 @@ public class Scheduler {
         if(!serveQueue.changeRequestFanSpeed(customId, fanSpeed) && !waitQueue.changeRequestFanSpeed(customId, fanSpeed)){
             holdOnQueue.changeRequestFanSpeed(customId, fanSpeed);
         }
+        Room room=roomList.findRoom(customId);
+        if (null!=room){
+            room.setFanSpeed(fanSpeed);
+            if (FanSpeed.HIGH==fanSpeed) room.setFeeRate(FEE_RATE_HIGH);
+            else if(FanSpeed.MEDIUM==fanSpeed) room.setFeeRate(FEE_RATE_MID);
+            else room.setFeeRate(FEE_RATE_LOW);
+        }
         schedule();
     }
 
@@ -105,9 +113,15 @@ public class Scheduler {
         if(!serveQueue.changeRequestTemp(customId, temp) && !waitQueue.changeRequestTemp(customId, temp)){
             holdOnQueue.changeRequestTemp(customId, temp);
         }
+        Room room=roomList.findRoom(customId);
+        if (null!=room){
+            room.setTargetTemp(temp);
+        }
     }
 
     public void dealWithRequest(Request request){
+        Room room = roomList.findRoom(request.getCustomId());
+        logDao.storeLog(new Log(request.getCustomId(),request.getRoomId(), ScheduleType.REQUEST_ON, request.getTargetMode(), request.getFanSpeed(), room.getCurrentTemp(), request.getTargetTemp(), room.getFee(), room.getFeeRate()));
         waitQueue.addRequest(request);
         System.out.println("dealWithRequest(Request request)");
         schedule();
@@ -115,6 +129,8 @@ public class Scheduler {
 
     public void dealWithRequestOff(int customId){
         Request req=serveQueue.findRequest(customId);
+        Room room = roomList.findRoom(customId);
+        logDao.storeLog(new Log(req.getCustomId(),req.getRoomId(), ScheduleType.REQUEST_OFF, req.getTargetMode(), req.getFanSpeed(), room.getCurrentTemp(), req.getTargetTemp(), room.getFee(), room.getFeeRate()));
         if (req!=null){
             //在服务队列中，需要出队
             serveQueue.removeRequest(customId);

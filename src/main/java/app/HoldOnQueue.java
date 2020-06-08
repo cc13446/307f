@@ -2,6 +2,8 @@ package app;
 
 import Dao.LogDao;
 import Domain.Log;
+import Domain.Request;
+import Domain.Room;
 import Enum.*;
 import java.util.LinkedList;
 import java.util.List;
