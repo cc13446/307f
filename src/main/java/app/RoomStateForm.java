@@ -1,8 +1,5 @@
 package app;
 
-import Enum.FanSpeed;
-import Enum.State;
-
 import java.io.Serializable;
 
 public class RoomStateForm implements Serializable {
@@ -22,7 +19,7 @@ public class RoomStateForm implements Serializable {
         this.currentTemp = currentTemp;
     }
 
-    public RoomStateForm(int customerID,int roomId,int state, double fee, double currentTemp, double targetTemp, double feeRate, long duration, int fanSpeed) {
+    public RoomStateForm(int customerID, int roomId, int state, double fee, double currentTemp, double targetTemp, double feeRate, long duration, int fanSpeed) {
         this.state = state;
         this.fee = fee;
         this.currentTemp = currentTemp;
