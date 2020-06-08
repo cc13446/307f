@@ -162,11 +162,14 @@ public class Scheduler {
             waitQueue.removeRequest(req.getCustomId());
             serveQueue.addRequest(req);
             // 启动一个Servant
-
+            schedule();
         }else{
             //服务对象数大于等于上限
             Request serveReq=serveQueue.getSlowestFanSpeedRequest();
             Request waitReq=waitQueue.getFastestFanSpeedRequest();
+            if(waitReq == null || serveReq == null){
+                return;
+            }
             if (waitReq.getFanSpeed().compareTo(serveReq.getFanSpeed())>0){
                 //等待队列中有风速更快的，触发优先级调度
                 System.out.println("schedule 触发优先级调度");
