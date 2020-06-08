@@ -129,25 +129,30 @@ public class Scheduler {
     }
 
     public void dealWithRequestOff(int customId){
-        Request req=serveQueue.findRequest(customId);
         Room room = roomList.findRoom(customId);
         room.setState(State.OFF);
-        logDao.storeLog(new Log(req.getCustomId(),req.getRoomId(), ScheduleType.REQUEST_OFF, req.getTargetMode(), req.getFanSpeed(), room.getCurrentTemp(), req.getTargetTemp(), room.getFee(), room.getFeeRate()));
+        Request req=serveQueue.findRequest(customId);
         if (req!=null){
             //在服务队列中，需要出队
             serveQueue.removeRequest(customId);
             schedule();
         }
-        req=waitQueue.findRequest(customId);
-        if (req!=null){
-            //在等待队列中
-            waitQueue.removeRequest(customId);
+        else {
+            req=waitQueue.findRequest(customId);
+            if (req!=null){
+                //在等待队列中
+                waitQueue.removeRequest(customId);
+            }
+            else
+            {
+                req=holdOnQueue.findReqeust(customId);
+                if (req!=null){
+                    //在等待队列中
+                    holdOnQueue.removeRequest(customId);
+                }
+            }
         }
-        req=holdOnQueue.findReqeust(customId);
-        if (req!=null){
-            //在等待队列中
-            holdOnQueue.removeRequest(customId);
-        }
+        logDao.storeLog(new Log(req.getCustomId(),req.getRoomId(), ScheduleType.REQUEST_OFF, req.getTargetMode(), req.getFanSpeed(), room.getCurrentTemp(), req.getTargetTemp(), room.getFee(), room.getFeeRate()));
     }
 
     public void schedule(){
