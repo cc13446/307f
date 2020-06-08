@@ -12,8 +12,8 @@ public class CheckRoomStateController {
     public CheckRoomStateController(Scheduler scheduler) {
         this.scheduler = scheduler;
     }
-
     public List<RoomStateForm> getRoomStateFormList(){
+        System.out.println("CheckRoomStateController:getRoomStateFormList");
         return new CheckRoomStateServant().getRoomStateFormList(scheduler);
     }
 }

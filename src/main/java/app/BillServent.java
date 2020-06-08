@@ -19,10 +19,12 @@ public class BillServent {
 
         List<DetailBillItem> items = new LinkedList<>();
         List<Log> logs = logDao.QueryLog(customID);
-        for (int i = 0; i < logs.size(); i++){
+        System.out.println(logs);
+        System.out.println(logs.size());
+        for (int i = 0; i < logs.size() - 1; i++){
             if(logs.get(i).getScheduleType() != ScheduleType.REQUEST_ON && logs.get(i).getScheduleType() != ScheduleType.REQUEST_OFF
                     &&logs.get(i + 1).getScheduleType() != ScheduleType.REQUEST_ON && logs.get(i + 1).getScheduleType() != ScheduleType.REQUEST_OFF ){
-
+                System.out.println(i);
                 DetailBillItem item=new DetailBillItem();
                 item.setStartTime(logs.get(i).getTime());
                 item.setEndTime(logs.get(i + 1).getTime());
@@ -33,9 +35,11 @@ public class BillServent {
                 item.setFeeRate(logs.get(i).getFeeRate());
                 item.setDuration(item.getEndTime().getTime() - item.getStartTime().getTime());
                 items.add(item);
+                System.out.println(item);
             }
         }
-       return items;
+        System.out.println(items);
+        return items;
     }
 
     public Invoice CreateInvoice(int roomId){
@@ -48,6 +52,7 @@ public class BillServent {
             invoice.setRoomId(roomId);
             invoice.setTotalFee(logDao.QueryTotalFee(customId));
         }
+        System.out.println(invoice);
         return invoice;
     }
 }

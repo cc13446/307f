@@ -39,6 +39,7 @@ public class StartUpController {
     }
 
     public boolean powerOn() throws IOException {
+        System.out.println("powerOn 执行了");
         logDao = new LogDao();
         scheduler = new Scheduler(feeRateHigh, feeRateMid, feeRateLow, logDao);
         setPara(mode, tempHighLimit, tempLowLimit, defaultTargetTemp);

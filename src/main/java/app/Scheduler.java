@@ -121,6 +121,7 @@ public class Scheduler {
 
     public void dealWithRequest(Request request){
         Room room = roomList.findRoom(request.getCustomId());
+        room.setState(State.ON);
         logDao.storeLog(new Log(request.getCustomId(),request.getRoomId(), ScheduleType.REQUEST_ON, request.getTargetMode(), request.getFanSpeed(), room.getCurrentTemp(), request.getTargetTemp(), room.getFee(), room.getFeeRate()));
         waitQueue.addRequest(request);
         System.out.println("dealWithRequest(Request request)");
@@ -130,6 +131,7 @@ public class Scheduler {
     public void dealWithRequestOff(int customId){
         Request req=serveQueue.findRequest(customId);
         Room room = roomList.findRoom(customId);
+        room.setState(State.OFF);
         logDao.storeLog(new Log(req.getCustomId(),req.getRoomId(), ScheduleType.REQUEST_OFF, req.getTargetMode(), req.getFanSpeed(), room.getCurrentTemp(), req.getTargetTemp(), room.getFee(), room.getFeeRate()));
         if (req!=null){
             //在服务队列中，需要出队
@@ -177,9 +179,9 @@ public class Scheduler {
                     @Override
                     public void run() {
                         try {
-                            Thread.sleep(5000); //等改成两分钟
+                            Thread.sleep(120000); //等改成两分钟
                             if (null!=serveQueue.findRequest(serveReq.getCustomId())){
-                                System.out.println("5s后");
+                                System.out.println("2min后");
                                 serveQueue.removeRequest(serveReq.getCustomId());
                                 waitQueue.addRequest(serveReq);
                                 Request nowWaitReq=waitQueue.getFastestFanSpeedRequest();
