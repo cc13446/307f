@@ -158,6 +158,7 @@ public class Scheduler {
             if(req == null){
                 return;
             }
+            System.out.println("schedule 服务对象数小于上限");
             waitQueue.removeRequest(req.getCustomId());
             serveQueue.addRequest(req);
             // 启动一个Servant
@@ -168,32 +169,28 @@ public class Scheduler {
             Request waitReq=waitQueue.getFastestFanSpeedRequest();
             if (waitReq.getFanSpeed().compareTo(serveReq.getFanSpeed())>0){
                 //等待队列中有风速更快的，触发优先级调度
+                System.out.println("schedule 触发优先级调度");
                 serveQueue.removeRequest(serveReq.getCustomId());
                 waitQueue.addRequest(serveReq);
                 waitQueue.removeRequest(waitReq.getCustomId());
                 serveQueue.addRequest(waitReq);
                 schedule();
             }else if(waitReq.getFanSpeed().compareTo(serveReq.getFanSpeed())==0){
-                //触发时间片轮转
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(120000); //等改成两分钟
-                            if (null!=serveQueue.findRequest(serveReq.getCustomId())){
-                                System.out.println("2min后");
-                                serveQueue.removeRequest(serveReq.getCustomId());
-                                waitQueue.addRequest(serveReq);
-                                Request nowWaitReq=waitQueue.getFastestFanSpeedRequest();
-                                waitQueue.removeRequest(nowWaitReq.getCustomId());
-                                serveQueue.addRequest(nowWaitReq);
-                                schedule();
-                            }
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+                for(Servant servant : serveQueue.servantList){
+                    if(servant.getRequest().getFanSpeed() == serveReq.getFanSpeed()){
+                        if(!servant.getRRFlag()){
+                            servant.setRRFlag(true);
                         }
+
                     }
-                }).start();
+                    else {
+                        servant.setRRFlag(false);
+                    }
+                }
+            }else{
+                for(Servant servant : serveQueue.servantList){
+                    servant.setRRFlag(false);
+                }
             }
         }
     }

@@ -26,7 +26,6 @@ public class FeeHttpHandler implements HttpHandler {
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             String str = reader.readLine();
             JSONObject temp = JSONObject.fromObject(str);
-            System.out.println("收到：" + temp);
             int id=temp.getInt("id");
             Double currentTemp=temp.getDouble("currentTemperature");
             Double changeTemperature=temp.getDouble("changeTemperature");

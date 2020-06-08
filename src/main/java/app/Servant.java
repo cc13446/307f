@@ -16,6 +16,8 @@ public class Servant{
     private double feeRate;
     private LogDao logDao;
     private RoomList roomList;
+    private int duration;
+    private Boolean RRFlag;
 
     private MyEventListener Listener;
     //注册监听器
@@ -32,9 +34,17 @@ public class Servant{
             case 1: feeRate = FEE_RATE_MID;break;
             case 2: feeRate = FEE_RATE_HIGH;break;
         }
+        duration = 120000;
+        RRFlag = false;
+    }
+    public boolean getRRFlag(){
+        return RRFlag;
     }
 
-
+    public void setRRFlag(boolean RRFlag){
+        this.RRFlag = RRFlag;
+        duration = 120000;
+    }
     public MyEventListener getListener() {
         return Listener;
     }
@@ -117,6 +127,9 @@ public class Servant{
                 try {
                     while(state == State.ON){
                         Thread.sleep(60000/80);
+                        if(RRFlag){
+                            duration -= 60000/80;
+                        }
                         changeFee(80);
                         room.setDuration(room.getDuration()+60000/80);
                         if (Math.abs(request.getTargetTemp() - room.getCurrentTemp()) < 0.1){
@@ -126,6 +139,13 @@ public class Servant{
                                 return;
                             }
 
+                        }
+                        if(0 == duration && RRFlag){
+                            room.setState(State.WAIT);
+                            if(endServe()) {
+                                notifyListenerEvents(new MyEventObject(request.getCustomId()));
+                                return;
+                            }
                         }
                     }
                 } catch (InterruptedException e) {
@@ -141,6 +161,7 @@ public class Servant{
     {
         this.state = State.OFF;
         storeLog(ScheduleType.CLOSE);
+        this.state = room.getState();
         return true;
     }
 
