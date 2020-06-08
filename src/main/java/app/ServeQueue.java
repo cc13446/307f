@@ -44,9 +44,16 @@ public class ServeQueue {
         servant.setListener(new MyEventListener() {
             @Override
             public void handleEvent(EventObject event) {
-                servantList.remove(servant);
-                serveRequestList.remove(request);
-                scheduler.holdOnQueue.addRequest(request);
+                if(servant.getState() == State.HOLDON){
+                    servantList.remove(servant);
+                    serveRequestList.remove(request);
+                    scheduler.holdOnQueue.addRequest(request);
+                }
+                else if(servant.getState() == State.WAIT){
+                    servantList.remove(servant);
+                    serveRequestList.remove(request);
+                    scheduler.waitQueue.addRequest(request);
+                }
                 scheduler.schedule();
             }
         });

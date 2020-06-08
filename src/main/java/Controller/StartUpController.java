@@ -14,7 +14,7 @@ import java.util.List;
 
 public class StartUpController {
     private Scheduler scheduler;
-    private UseController useController;
+    public UseController useController;
     public CheckRoomStateController checkRoomStateController;
     public PrintReportController printReportController;
     public PrintBillController printBillController;
@@ -28,6 +28,38 @@ public class StartUpController {
     private double defaultTargetTemp;
     LogDao logDao;
 
+    public Mode getMode() {
+        return mode;
+    }
+
+    public void setMode(Mode mode) {
+        this.mode = mode;
+    }
+
+    public double getTempHighLimit() {
+        return tempHighLimit;
+    }
+
+    public void setTempHighLimit(double tempHighLimit) {
+        this.tempHighLimit = tempHighLimit;
+    }
+
+    public double getTempLowLimit() {
+        return tempLowLimit;
+    }
+
+    public void setTempLowLimit(double tempLowLimit) {
+        this.tempLowLimit = tempLowLimit;
+    }
+
+    public double getDefaultTargetTemp() {
+        return defaultTargetTemp;
+    }
+
+    public void setDefaultTargetTemp(double defaultTargetTemp) {
+        this.defaultTargetTemp = defaultTargetTemp;
+    }
+
     public StartUpController(double feeRateHigh, double feeRateMid, double feeRateLow, Mode mode, double tempHighLimit, double tempLowLimit, double defaultTargetTemp) {
         this.feeRateHigh = feeRateHigh;
         this.feeRateMid = feeRateMid;
@@ -39,6 +71,7 @@ public class StartUpController {
     }
 
     public boolean powerOn() throws IOException {
+        System.out.println("powerOn 执行了");
         logDao = new LogDao();
         scheduler = new Scheduler(feeRateHigh, feeRateMid, feeRateLow, logDao);
         setPara(mode, tempHighLimit, tempLowLimit, defaultTargetTemp);
@@ -54,7 +87,7 @@ public class StartUpController {
 
         List<HttpHandler> handlerList=new ArrayList<HttpHandler>(Arrays.asList(
                 new FanHttpHandler(useController),
-                new RoomInitHttpHandler(useController),
+                new RoomInitHttpHandler(this),
                 new RequestOnAndOffHandler(useController),
                 new TempHttpHandler(useController),
                 new RoomExitHttpHandler(useController),

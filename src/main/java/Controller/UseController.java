@@ -45,7 +45,6 @@ public class UseController {
         Room room = scheduler.roomList.findRoom(customId);
         room.setCurrentTemp(currentTemp);
         Request request = scheduler.holdOnQueue.findReqeust(customId);
-        System.out.println("待机重新调度" + request);
         if(request != null && Math.abs(room.getCurrentTemp() - request.getTargetTemp()) >= 1){
             System.out.println("待机重新调度");
             scheduler.holdOnQueue.removeRequest(customId);

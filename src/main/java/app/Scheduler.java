@@ -121,6 +121,7 @@ public class Scheduler {
 
     public void dealWithRequest(Request request){
         Room room = roomList.findRoom(request.getCustomId());
+        room.setState(State.ON);
         logDao.storeLog(new Log(request.getCustomId(),request.getRoomId(), ScheduleType.REQUEST_ON, request.getTargetMode(), request.getFanSpeed(), room.getCurrentTemp(), request.getTargetTemp(), room.getFee(), room.getFeeRate()));
         waitQueue.addRequest(request);
         System.out.println("dealWithRequest(Request request)");
@@ -130,6 +131,7 @@ public class Scheduler {
     public void dealWithRequestOff(int customId){
         Request req=serveQueue.findRequest(customId);
         Room room = roomList.findRoom(customId);
+        room.setState(State.OFF);
         logDao.storeLog(new Log(req.getCustomId(),req.getRoomId(), ScheduleType.REQUEST_OFF, req.getTargetMode(), req.getFanSpeed(), room.getCurrentTemp(), req.getTargetTemp(), room.getFee(), room.getFeeRate()));
         if (req!=null){
             //在服务队列中，需要出队
@@ -156,42 +158,42 @@ public class Scheduler {
             if(req == null){
                 return;
             }
+            System.out.println("schedule 服务对象数小于上限");
             waitQueue.removeRequest(req.getCustomId());
             serveQueue.addRequest(req);
             // 启动一个Servant
-
+            schedule();
         }else{
             //服务对象数大于等于上限
             Request serveReq=serveQueue.getSlowestFanSpeedRequest();
             Request waitReq=waitQueue.getFastestFanSpeedRequest();
+            if(waitReq == null || serveReq == null){
+                return;
+            }
             if (waitReq.getFanSpeed().compareTo(serveReq.getFanSpeed())>0){
                 //等待队列中有风速更快的，触发优先级调度
+                System.out.println("schedule 触发优先级调度");
                 serveQueue.removeRequest(serveReq.getCustomId());
                 waitQueue.addRequest(serveReq);
                 waitQueue.removeRequest(waitReq.getCustomId());
                 serveQueue.addRequest(waitReq);
                 schedule();
             }else if(waitReq.getFanSpeed().compareTo(serveReq.getFanSpeed())==0){
-                //触发时间片轮转
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(5000); //等改成两分钟
-                            if (null!=serveQueue.findRequest(serveReq.getCustomId())){
-                                System.out.println("5s后");
-                                serveQueue.removeRequest(serveReq.getCustomId());
-                                waitQueue.addRequest(serveReq);
-                                Request nowWaitReq=waitQueue.getFastestFanSpeedRequest();
-                                waitQueue.removeRequest(nowWaitReq.getCustomId());
-                                serveQueue.addRequest(nowWaitReq);
-                                schedule();
-                            }
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+                for(Servant servant : serveQueue.servantList){
+                    if(servant.getRequest().getFanSpeed() == serveReq.getFanSpeed()){
+                        if(!servant.getRRFlag()){
+                            servant.setRRFlag(true);
                         }
+
                     }
-                }).start();
+                    else {
+                        servant.setRRFlag(false);
+                    }
+                }
+            }else{
+                for(Servant servant : serveQueue.servantList){
+                    servant.setRRFlag(false);
+                }
             }
         }
     }

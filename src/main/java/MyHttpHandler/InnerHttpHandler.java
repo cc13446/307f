@@ -119,6 +119,8 @@ public class InnerHttpHandler implements HttpHandler {
             obj.put("fee",roomStateForm.fee);
             jsonArray.add(obj);
         }
+        System.out.println("jsonArray构造完毕");
+        System.out.println(jsonArray);
         Headers responseHeaders = exchange.getResponseHeaders();
         responseHeaders.set("Content-Type", "application/json");
         exchange.sendResponseHeaders(200, 0);
@@ -136,8 +138,9 @@ public class InnerHttpHandler implements HttpHandler {
         JSONObject obj=new JSONObject();
         obj.put("customId",invoice.getCustomId());
         obj.put("totalFee",invoice.getTotalFee());
-        obj.put("requestOnDate",invoice.getDateIn());
-        obj.put("requestOffDate",invoice.getDateOut());
+        obj.put("requestOnDate",invoice.getDateIn().toString());
+        obj.put("requestOffDate",invoice.getDateOut().toString());
+        System.out.println(obj);
         Headers responseHeaders = exchange.getResponseHeaders();
         responseHeaders.set("Content-Type", "application/json");
         exchange.sendResponseHeaders(200, 0);
@@ -153,10 +156,11 @@ public class InnerHttpHandler implements HttpHandler {
         Invoice invoice = printBillController.CreateInvoice(roomId);
         int customID = invoice.getCustomId();
         List<DetailBillItem> detailBillItemList = printDetailBillController.CreateDetailBill(customID);
+        System.out.println(detailBillItemList);
         for (DetailBillItem detailBillItem:detailBillItemList){
             JSONObject obj=new JSONObject();
-            obj.put("startTime",detailBillItem.getStartTime());
-            obj.put("endTime",detailBillItem.getEndTime());
+            obj.put("startTime",detailBillItem.getStartTime().toString());
+            obj.put("endTime",detailBillItem.getEndTime().toString());
             obj.put("mode",detailBillItem.getMode().ordinal());
             obj.put("fanSpeed",detailBillItem.getFanSpeed().ordinal());
             obj.put("targetTemp",detailBillItem.getTargetTemp());
@@ -166,10 +170,11 @@ public class InnerHttpHandler implements HttpHandler {
 
             jsonArray.add(obj);
         }
+        System.out.println(jsonArray.toString());
         JSONObject json = new JSONObject();
         json.put("customId", customID);
-        json.put("requestOnDate", invoice.getDateIn());
-        json.put("requestOffDate", invoice.getDateOut());
+        json.put("requestOnDate", invoice.getDateIn().toString());
+        json.put("requestOffDate", invoice.getDateOut().toString());
         json.put("data", jsonArray);
         Headers responseHeaders = exchange.getResponseHeaders();
         responseHeaders.set("Content-Type", "application/json");
@@ -192,6 +197,7 @@ public class InnerHttpHandler implements HttpHandler {
         JSONArray jsonArray=new JSONArray();
         PrintReportController printReportController = startUpController.printReportController;
         List<ReportForm> reportFormList = printReportController.QueryReport(roomList,report);
+        System.out.println(reportFormList);
         for (ReportForm reportForm:reportFormList){
             JSONObject obj=new JSONObject();
             obj.put("roomId",reportForm.getRoomId());
@@ -204,6 +210,7 @@ public class InnerHttpHandler implements HttpHandler {
             obj.put("changeFanSpeedTimes",reportForm.getChangeFanSpeedTimes());
             jsonArray.add(obj);
         }
+        System.out.println(reportFormList);
         Headers responseHeaders = exchange.getResponseHeaders();
         responseHeaders.set("Content-Type", "application/json");
         exchange.sendResponseHeaders(200, 0);

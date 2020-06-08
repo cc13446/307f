@@ -85,4 +85,18 @@ public class DetailBillItem {
     public void setDuration(long duration) {
         this.duration = duration;
     }
+
+    @Override
+    public String toString() {
+        return "DetailBillItem{" +
+                "startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", mode=" + mode +
+                ", fanSpeed=" + fanSpeed +
+                ", targetTemp=" + targetTemp +
+                ", fee=" + fee +
+                ", feeRate=" + feeRate +
+                ", duration=" + duration +
+                '}';
+    }
 }
