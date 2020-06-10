@@ -60,6 +60,9 @@ public class InnerHttpHandler implements HttpHandler {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
+                case 5:
+                    // 系统关机
+                    systemOut(exchange,temp);
                     break;
             }
 
@@ -217,5 +220,16 @@ public class InnerHttpHandler implements HttpHandler {
         OutputStream responseBody = exchange.getResponseBody();
         responseBody.write(jsonArray.toString().getBytes());
         responseBody.close();
+    }
+    private void systemOut(HttpExchange exchange,JSONObject temp) throws IOException{
+        JSONObject obj=new JSONObject();
+        obj.put("state",0);
+        Headers responseHeaders = exchange.getResponseHeaders();
+        responseHeaders.set("Content-Type", "application/json");
+        exchange.sendResponseHeaders(200, 0);
+        OutputStream responseBody = exchange.getResponseBody();
+        responseBody.write(obj.toString().getBytes());
+        responseBody.close();
+        System.exit(0);
     }
 }
