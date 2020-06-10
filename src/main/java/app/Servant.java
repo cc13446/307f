@@ -127,6 +127,7 @@ public class Servant{
                 try {
                     while(state == State.ON){
                         Thread.sleep(60000/80);
+                        if(state==State.OFF) return;
                         if(RRFlag){
                             duration -= 60000/80;
                         }

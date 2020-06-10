@@ -32,11 +32,12 @@ public class RequestOnAndOffHandler implements HttpHandler {
             int id=resJson.getInt("id");
             double targetTemperature=resJson.getDouble("targetTemperature");
             int fanSpeed=resJson.getInt("fanSpeed");
+            double currentTemperature=resJson.getDouble("currentTemperature");
             //
             //从id取得房间id
             //
 
-            useController.requestOn(new Request(id,useController.findRoomId(id),targetTemperature, FanSpeed.values()[fanSpeed],0,useController.getMode()));
+            useController.requestOn(new Request(id,useController.findRoomId(id),targetTemperature, FanSpeed.values()[fanSpeed],0,useController.getMode()),currentTemperature);
 
             Headers responseHeaders = exchange.getResponseHeaders();
             responseHeaders.set("Content-Type", "application/json");

@@ -96,6 +96,7 @@ public class InnerHttpHandler implements HttpHandler {
         OutputStream responseBody = exchange.getResponseBody();
         JSONObject json=new JSONObject();
         json.put("state",0);
+        System.out.println(json);
         responseBody.write(json.toString().getBytes());
         responseBody.close();
     }

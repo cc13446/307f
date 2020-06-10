@@ -12,8 +12,9 @@ public class UseController {
         this.scheduler = scheduler;
     }
 
-    public void requestOn(Request request) {
+    public void requestOn(Request request,double currentTemperature) {
         System.out.println(request);
+        scheduler.roomList.findRoom(request.getCustomId()).setCurrentTemp(currentTemperature);
         scheduler.dealWithRequest(request);
     }
 
