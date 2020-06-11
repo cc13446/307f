@@ -18,11 +18,12 @@ public class Servant{
     private RoomList roomList;
     private int duration;
     private Boolean RRFlag;
+    private Mode mode;
 
     private MyEventListener Listener;
     //注册监听器
-    public Servant(double FEE_RATE_HIGH, double FEE_RATE_MID, double FEE_RATE_LOW, Request request, LogDao logDao, RoomList roomList) {
-
+    public Servant(double FEE_RATE_HIGH, double FEE_RATE_MID, double FEE_RATE_LOW, Request request, LogDao logDao, RoomList roomList,Mode mode) {
+        this.mode = mode;
         this.request = request;
         this.state = State.ON;
         this.roomList = roomList;
@@ -133,7 +134,7 @@ public class Servant{
                         }
                         changeFee(80);
                         room.setDuration(room.getDuration()+60000/80);
-                        if (Math.abs(request.getTargetTemp() - room.getCurrentTemp()) < 0.1){
+                        if ((mode == Mode.HOT && room.getCurrentTemp() >= request.getTargetTemp()) || (mode == Mode.COLD && room.getCurrentTemp() <= request.getTargetTemp())){
                             room.setState(State.HOLDON);
                             if(endServe()) {
                                 notifyListenerEvents(new MyEventObject(request.getCustomId()));

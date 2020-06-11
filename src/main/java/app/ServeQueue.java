@@ -40,7 +40,7 @@ public class ServeQueue {
     public void addRequest(Request request){
         serveRequestList.add(request);
         roomList.findRoom(request.getCustomId()).setState(State.SERVE);
-        Servant servant = new Servant(FEE_RATE_HIGH, FEE_RATE_MID, FEE_RATE_LOW, request, logDao, roomList);
+        Servant servant = new Servant(FEE_RATE_HIGH, FEE_RATE_MID, FEE_RATE_LOW, request, logDao, roomList,scheduler.getDefaultMode());
         servant.setListener(new MyEventListener() {
             @Override
             public void handleEvent(EventObject event) {
