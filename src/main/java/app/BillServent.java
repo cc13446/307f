@@ -8,14 +8,23 @@ import java.util.LinkedList;
 import java.util.List;
 import Enum.*;
 
+/*
+ *  查看账单的服务对象（来自前台的服务）
+ *  最后更新时间：2020/6/8 20:20
+ *  还没加完注释，我不太清楚，你们谁加一下然后把这行删掉
+ */
+
 public class BillServent {
+
     private LogDao logDao;
+
 
     public BillServent(LogDao logDao) {
         this.logDao = logDao;
     }
 
     public List<DetailBillItem> CreateDetailBill(int customID){
+        //构造一个账单
 
         List<DetailBillItem> items = new LinkedList<>();
         List<Log> logs = logDao.QueryLog(customID);

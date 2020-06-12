@@ -6,6 +6,7 @@ import Enum.*;
 import app.*;
 
 public class UseController {
+
     private Scheduler scheduler;
 
     public UseController(Scheduler scheduler) {
