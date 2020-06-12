@@ -6,9 +6,12 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import net.sf.json.JSONObject;
-
 import java.io.*;
-import Enum.*;
+
+/*
+ *  开房初始化的通信handler
+ *  最后更新时间：2020/6/8 23:13
+ */
 
 public class RoomInitHttpHandler implements HttpHandler {
     private StartUpController startUpController;

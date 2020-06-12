@@ -1,15 +1,27 @@
 package Domain;
 
-public class ReportForm {
-    private int roomId;//房间号
-    private int turnTimes;//每个房间的开关次数
-    private long useTime;//使用空调的时长
-    private double totalFee;//总费用
-    private int schedulerTimes;//被调度的次数
-    private int customNumber;//详单数
-    private int changeTempTimes;//调温次数
-    private int changeFanSpeedTimes;//调风次数
+/*
+ *  报表具体信息对象，存放某个房间的各项报表信息
+ *  最后更新时间：2020/6/12 23:21
+ */
 
+public class ReportForm {
+    //房间号
+    private int roomId;
+    //每个房间的开关次数
+    private int turnTimes;
+    //使用空调的时长
+    private long useTime;
+    //总费用
+    private double totalFee;
+    //被调度的次数
+    private int schedulerTimes;
+    //详单数
+    private int customNumber;
+    //调温次数
+    private int changeTempTimes;
+    //调风次数
+    private int changeFanSpeedTimes;
 
 
     //构造方法

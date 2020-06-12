@@ -4,12 +4,14 @@ import Dao.LogDao;
 import Domain.Report;
 import Domain.ReportForm;
 import app.ReportServant;
-import Enum.*;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+
+/*
+ *  打印报表控制器对象
+ *  最后更新时间：2020/6/12 23:21
+ */
 
 public class PrintReportController {
     private LogDao logDao;

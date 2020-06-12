@@ -1,7 +1,7 @@
 package Controller;
 
 import app.CheckRoomStateServant;
-import app.RoomStateForm;
+import Domain.RoomStateForm;
 import app.Scheduler;
 
 import java.util.List;

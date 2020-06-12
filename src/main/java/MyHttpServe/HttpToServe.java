@@ -4,13 +4,13 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.concurrent.Executors;
-
-import com.sun.net.httpserver.Headers;
-import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
-import net.sf.json.JSONObject;
 
+/*
+ *  通信工具类，绑定url与handler
+ *  最后更新时间：2020/6/5 17:05
+ */
 
 public class HttpToServe {
     private InetSocketAddress addr;
@@ -38,8 +38,8 @@ public class HttpToServe {
     }
 
     private void createContext(List<String> urlList, List<HttpHandler> handlerList){
+        //绑定列表中的url与handler
         int len = urlList.size();
-
         for(int i=0;i<len;i++){
             server.createContext(urlList.get(i),handlerList.get(i));
         }

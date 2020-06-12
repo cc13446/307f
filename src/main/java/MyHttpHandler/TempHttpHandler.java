@@ -5,12 +5,17 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import net.sf.json.JSONObject;
-import Enum.*;
-
 import java.io.*;
 
+/*
+ *  调节温度请求的通信handler
+ *  最后更新时间：2020/6/5 17:58
+ */
+
 public class TempHttpHandler implements HttpHandler {
+
     private UseController useController;
+
 
     public TempHttpHandler(UseController useController){
         super();
