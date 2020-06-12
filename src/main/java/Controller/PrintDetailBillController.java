@@ -19,6 +19,7 @@ public class PrintDetailBillController {
     }
 
     public List<DetailBillItem> CreateDetailBill(int customID){
+        System.out.println("PrintDetailBillController:CreateDetailBill");
         return billServant.CreateDetailBill(customID);
 
     }

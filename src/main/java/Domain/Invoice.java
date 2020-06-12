@@ -48,4 +48,15 @@ public class Invoice {
     public void setCustomId(int customId) {
         this.customId = customId;
     }
+
+    @Override
+    public String toString() {
+        return "Invoice{" +
+                "dateIn=" + dateIn +
+                ", dateOut=" + dateOut +
+                ", totalFee=" + totalFee +
+                ", roomId=" + roomId +
+                ", customId=" + customId +
+                '}';
+    }
 }

@@ -1,22 +1,28 @@
 package MyHttpHandler;
 
+import Controller.StartUpController;
 import Controller.UseController;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import net.sf.json.JSONObject;
-
 import java.io.*;
-import Enum.*;
+
+/*
+ *  开房初始化的通信handler
+ *  最后更新时间：2020/6/8 23:13
+ */
 
 public class RoomInitHttpHandler implements HttpHandler {
+    private StartUpController startUpController;
     private UseController useController;
     private static int roomNum;
 
-    public RoomInitHttpHandler(UseController useController){
+    public RoomInitHttpHandler(StartUpController startUpController){
         super();
-        this.useController=useController;
-        roomNum = useController.getMaxCustomId() + 1;
+        this.startUpController = startUpController;
+        this.useController = startUpController.useController;
+        roomNum = startUpController.useController.getMaxCustomId() + 1;
     }
 
     @Override
@@ -35,15 +41,9 @@ public class RoomInitHttpHandler implements HttpHandler {
             double highestTemperature;
             double lowestTemperature=18;
             int defaultFanSpeed=1;
+            defaultTargetTemperature=startUpController.getDefaultTargetTemp();
+            highestTemperature=startUpController.getTempHighLimit();
 
-            Mode mode=useController.getMode();
-            if (mode==Mode.COLD){
-                defaultTargetTemperature=25;
-                highestTemperature=28;
-            }else{
-                defaultTargetTemperature=22;
-                highestTemperature=25;
-            }
 
             useController.addRoom(roomNum, roomId,currentTemperature,defaultTargetTemperature);
 

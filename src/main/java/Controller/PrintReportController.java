@@ -9,6 +9,7 @@ import Enum.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 
 public class PrintReportController {
     private LogDao logDao;
@@ -20,7 +21,7 @@ public class PrintReportController {
     }
 
     //生成报表对象
-    public LinkedList<ReportForm> QueryReport(LinkedList<Integer> listRoomId, Report report) {
+    public List<ReportForm> QueryReport(LinkedList<Integer> listRoomId, Report report) {
         ReportServant reportServant = new ReportServant(report,logDao);
         return reportServant.QueryReport(listRoomId);
     }

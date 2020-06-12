@@ -12,8 +12,9 @@ public class UseController {
         this.scheduler = scheduler;
     }
 
-    public void requestOn(Request request) {
+    public void requestOn(Request request,double currentTemperature) {
         System.out.println(request);
+        scheduler.roomList.findRoom(request.getCustomId()).setCurrentTemp(currentTemperature);
         scheduler.dealWithRequest(request);
     }
 
@@ -45,12 +46,13 @@ public class UseController {
         Room room = scheduler.roomList.findRoom(customId);
         room.setCurrentTemp(currentTemp);
         Request request = scheduler.holdOnQueue.findReqeust(customId);
-        System.out.println("待机重新调度" + request);
-        if(request != null && Math.abs(room.getCurrentTemp() - request.getTargetTemp()) >= 1){
-            System.out.println("待机重新调度");
-            scheduler.holdOnQueue.removeRequest(customId);
-            scheduler.waitQueue.addRequest(request);
-            scheduler.schedule();
+        if(request != null){
+            if((scheduler.getDefaultMode() == Mode.HOT && room.getCurrentTemp() - request.getTargetTemp() <= -1) || (scheduler.getDefaultMode()  == Mode.COLD && room.getCurrentTemp() - request.getTargetTemp() >= 1)){
+                System.out.println("待机重新调度");
+                scheduler.holdOnQueue.removeRequest(customId);
+                scheduler.waitQueue.addRequest(request);
+                scheduler.schedule();
+            }
         }
         return room.getFee();
     }

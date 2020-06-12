@@ -5,8 +5,12 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import net.sf.json.JSONObject;
-
 import java.io.*;
+
+/*
+ *  退房的通信handler
+ *  最后更新时间：2020/6/7 01:40
+ */
 
 public class RoomExitHttpHandler implements HttpHandler {
     private UseController useController;
@@ -27,9 +31,6 @@ public class RoomExitHttpHandler implements HttpHandler {
             System.out.println("收到：" + resJson);
             //这里不是roomId
             int id=resJson.getInt("id");
-            //
-            //从id取得房间id
-            //
             useController.requestEnd(id);
             Headers responseHeaders = exchange.getResponseHeaders();
             responseHeaders.set("Content-Type", "application/json");

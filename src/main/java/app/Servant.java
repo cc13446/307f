@@ -16,11 +16,14 @@ public class Servant{
     private double feeRate;
     private LogDao logDao;
     private RoomList roomList;
+    private int duration;
+    private Boolean RRFlag;
+    private Mode mode;
 
     private MyEventListener Listener;
     //注册监听器
-    public Servant(double FEE_RATE_HIGH, double FEE_RATE_MID, double FEE_RATE_LOW, Request request, LogDao logDao, RoomList roomList) {
-
+    public Servant(double FEE_RATE_HIGH, double FEE_RATE_MID, double FEE_RATE_LOW, Request request, LogDao logDao, RoomList roomList,Mode mode) {
+        this.mode = mode;
         this.request = request;
         this.state = State.ON;
         this.roomList = roomList;
@@ -32,11 +35,16 @@ public class Servant{
             case 1: feeRate = FEE_RATE_MID;break;
             case 2: feeRate = FEE_RATE_HIGH;break;
         }
+        duration = 120000;
+        RRFlag = false;
+    }
+    public boolean getRRFlag(){
+        return RRFlag;
     }
 
-
-    public MyEventListener getListener() {
-        return Listener;
+    public void setRRFlag(boolean RRFlag){
+        this.RRFlag = RRFlag;
+        duration = 120000;
     }
 
     public void setListener(MyEventListener listener) {
@@ -97,15 +105,7 @@ public class Servant{
         this.logDao = logDao;
     }
 
-    public RoomList getRoomList() {
-        return roomList;
-    }
-
-    public void setRoomList(RoomList roomList) {
-        this.roomList = roomList;
-    }
-
-
+    // 开始服务
     public boolean beginServe() throws InterruptedException {
         this.state = State.ON;
         if(!storeLog(ScheduleType.OPEN)){
@@ -117,15 +117,31 @@ public class Servant{
                 try {
                     while(state == State.ON){
                         Thread.sleep(60000/80);
+                        // 关闭服务对象线程退出
+                        if(state==State.OFF) return;
+                        // 时间片轮转计时
+                        if(RRFlag){
+                            duration -= 60000/80;
+                        }
+                        // 计费
                         changeFee(80);
+                        // 计时
                         room.setDuration(room.getDuration()+60000/80);
-                        if (Math.abs(request.getTargetTemp() - room.getCurrentTemp()) < 0.1){
+                        // 达到目标温度
+                        if ((mode == Mode.HOT && room.getCurrentTemp() >= request.getTargetTemp()) || (mode == Mode.COLD && room.getCurrentTemp() <= request.getTargetTemp())){
                             room.setState(State.HOLDON);
                             if(endServe()) {
                                 notifyListenerEvents(new MyEventObject(request.getCustomId()));
                                 return;
                             }
-
+                        }
+                        // 时间片轮转到时间
+                        if(0 == duration && RRFlag){
+                            room.setState(State.WAIT);
+                            if(endServe()) {
+                                notifyListenerEvents(new MyEventObject(request.getCustomId()));
+                                return;
+                            }
                         }
                     }
                 } catch (InterruptedException e) {
@@ -136,20 +152,21 @@ public class Servant{
         t.start();
         return true;
     }
-
+    // 结束服务
     public Boolean endServe()
     {
         this.state = State.OFF;
         storeLog(ScheduleType.CLOSE);
+        this.state = room.getState();
         return true;
     }
 
-
+    // 存储日志
     private boolean storeLog(ScheduleType scheduleType){
         Log log = new Log(request.getCustomId(),request.getRoomId(), scheduleType, request.getTargetMode(), request.getFanSpeed(), room.getCurrentTemp(), request.getTargetTemp(), fee, feeRate);
         return logDao.storeLog(log);
     }
-
+    // 计费
     private void changeFee(int divide){
         fee += feeRate/divide;
         room.setFee(fee);

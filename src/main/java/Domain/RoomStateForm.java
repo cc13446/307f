@@ -1,26 +1,31 @@
-package app;
-
-import Enum.FanSpeed;
-import Enum.State;
+package Domain;
 
 import java.io.Serializable;
 
-public class RoomStateForm implements Serializable {
-    public int roomID;
-    public int customerID;
-    public int state;
-    public double currentTemp;
-    public double targetTemp;
-    public int fanSpeed;
-    public double feeRate;
-    public double fee;
-    public long duration;
+/*
+ *  房间状态对象的格式，用于格式化传递对象
+ *  最后更新时间：2020/6/5 23:11
+ */
 
-    public RoomStateForm(int state, double fee, double currentTemp) {
-        this.state = state;
-        this.fee = fee;
-        this.currentTemp = currentTemp;
-    }
+public class RoomStateForm implements Serializable {
+    //房间号
+    public int roomID;
+    //唯一标识服务ID
+    public int customerID;
+    //房间状态
+    public int state;
+    //当前温度
+    public double currentTemp;
+    //目标温度
+    public double targetTemp;
+    //风速
+    public int fanSpeed;
+    //费率
+    public double feeRate;
+    //当前费用
+    public double fee;
+    //当前服务的总时长
+    public long duration;
 
     public RoomStateForm(int customerID,int roomId,int state, double fee, double currentTemp, double targetTemp, double feeRate, long duration, int fanSpeed) {
         this.state = state;

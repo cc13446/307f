@@ -9,6 +9,11 @@ import Enum.*;
 
 import java.io.*;
 
+/*
+ *  请求查看费用的通信handler
+ *  最后更新时间：2020/6/8 23:13
+ */
+
 public class FeeHttpHandler implements HttpHandler {
     private UseController useController;
 
@@ -26,7 +31,6 @@ public class FeeHttpHandler implements HttpHandler {
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             String str = reader.readLine();
             JSONObject temp = JSONObject.fromObject(str);
-            System.out.println("收到：" + temp);
             int id=temp.getInt("id");
             Double currentTemp=temp.getDouble("currentTemperature");
             Double changeTemperature=temp.getDouble("changeTemperature");
