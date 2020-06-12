@@ -13,14 +13,23 @@ import Enum.ScheduleType;
  *
  */
 public class DetailBillItem {
+    //服务开始时间
     private Date startTime;
+    //服务结束时间
     private Date endTime;
+    //空调模式
     private Mode mode;
+    //风速
     private FanSpeed fanSpeed;
+    //目标温度
     private double targetTemp;
+    //费用
     private double fee;
+    //费率
     private double feeRate;
+    //服务持续时间
     private long duration;
+
 
     public Date getStartTime() {
         return startTime;

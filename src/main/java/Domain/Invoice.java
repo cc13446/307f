@@ -3,11 +3,17 @@ package Domain;
 import java.util.Date;
 
 public class Invoice {
+    //入住时间
     private Date dateIn;
+    //退房时间
     private Date dateOut;
+    //总费用
     private double totalFee;
+    //房间号
     private int roomId;
+    //顾客号
     private int customId;
+
 
     public Date getDateIn() {
         return dateIn;
