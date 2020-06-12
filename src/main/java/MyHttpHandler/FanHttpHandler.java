@@ -8,7 +8,13 @@ import net.sf.json.JSONObject;
 import Enum.*;
 import java.io.*;
 
+/*
+ *  请求更改风速的通信handler
+ *  最后更新时间：2020/6/5 17:58
+ */
+
 public class FanHttpHandler implements HttpHandler {
+
     private UseController useController;
 
     public FanHttpHandler(UseController useController) {

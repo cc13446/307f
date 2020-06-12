@@ -5,7 +5,7 @@ import Domain.DetailBillItem;
 import Domain.Invoice;
 import Domain.Report;
 import Domain.ReportForm;
-import app.RoomStateForm;
+import Domain.RoomStateForm;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -20,7 +20,13 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+/*
+ *  来自服务器控制面板的内部通信handler
+ *  最后更新时间：2020/06/10 18:23
+ */
+
 public class InnerHttpHandler implements HttpHandler {
+
     private StartUpController startUpController;
 
     public InnerHttpHandler(){
@@ -80,6 +86,7 @@ public class InnerHttpHandler implements HttpHandler {
     }
 
     private void handlePowerOn(HttpExchange exchange, JSONObject temp) throws IOException {
+        //开启服务器
         int mode=temp.getInt("mode");
         double tempHighLimit=temp.getDouble("tempHighLimit");
         double tempLowLimit=temp.getDouble("tempLowLimit");
@@ -105,6 +112,7 @@ public class InnerHttpHandler implements HttpHandler {
     }
 
     private void handleCheckRoomState(HttpExchange exchange,JSONObject temp) throws IOException {
+        //查看房间状态
         JSONArray jsonArray=new JSONArray();
         CheckRoomStateController checkRoomStateController=startUpController.checkRoomStateController;
 
@@ -132,6 +140,7 @@ public class InnerHttpHandler implements HttpHandler {
         responseBody.close();
     }
     private void handleCheckBill(HttpExchange exchange,JSONObject temp) throws IOException {
+        // 查看账单
         JSONArray jsonArray=new JSONArray();
         PrintBillController printBillController =startUpController.printBillController;
         int roomId = temp.getInt("roomId");
@@ -152,6 +161,7 @@ public class InnerHttpHandler implements HttpHandler {
         responseBody.close();
     }
     private void handleCheckDetailBill(HttpExchange exchange,JSONObject temp) throws IOException {
+        // 查看详单
         JSONArray jsonArray=new JSONArray();
         PrintDetailBillController printDetailBillController =startUpController.printDetailBillController;
         PrintBillController printBillController =startUpController.printBillController;
@@ -187,6 +197,7 @@ public class InnerHttpHandler implements HttpHandler {
         responseBody.close();
     }
     private void handleCheckReport(HttpExchange exchange,JSONObject temp) throws IOException, ParseException {
+        // 查看报表
         SimpleDateFormat sdf = new SimpleDateFormat( " yyyy-MM-dd HH:mm:ss " );
         TypeReport reportType = TypeReport.values()[temp.getInt("reportType")];
         Date reportDate = sdf.parse( temp.get("reportDate").toString());
@@ -222,6 +233,7 @@ public class InnerHttpHandler implements HttpHandler {
         responseBody.close();
     }
     private void systemOut(HttpExchange exchange,JSONObject temp) throws IOException{
+        // 系统关机
         JSONObject obj=new JSONObject();
         obj.put("state",0);
         Headers responseHeaders = exchange.getResponseHeaders();
