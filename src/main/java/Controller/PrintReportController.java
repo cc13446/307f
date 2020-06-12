@@ -4,10 +4,7 @@ import Dao.LogDao;
 import Domain.Report;
 import Domain.ReportForm;
 import app.ReportServant;
-import Enum.*;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
