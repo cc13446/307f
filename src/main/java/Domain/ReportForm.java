@@ -1,5 +1,10 @@
 package Domain;
 
+/*
+ *  报表具体信息对象，存放某个房间的各项报表信息
+ *  最后更新时间：2020/6/12 23:21
+ */
+
 public class ReportForm {
     //房间号
     private int roomId;

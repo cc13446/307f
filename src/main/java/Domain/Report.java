@@ -1,10 +1,12 @@
 package Domain;
 
-import Domain.ReportForm;
 import Enum.TypeReport;
-
-import java.util.ArrayList;
 import java.util.Date;
+
+/*
+ *  报表对象
+ *  最后更新时间：2020/6/12 23:21
+ */
 
 public class Report {
     //报表类型

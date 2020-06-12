@@ -8,6 +8,11 @@ import Domain.Report;
 import Domain.ReportForm;
 import Enum.*;
 
+/*
+ *  查看报表的服务对象（来自经理的服务）
+ *  最后更新时间：2020/6/8 20:20
+ */
+
 public class ReportServant {
     private LogDao logDao;
     //报表对象
