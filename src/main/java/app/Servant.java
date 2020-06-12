@@ -46,9 +46,6 @@ public class Servant{
         this.RRFlag = RRFlag;
         duration = 120000;
     }
-    public MyEventListener getListener() {
-        return Listener;
-    }
 
     public void setListener(MyEventListener listener) {
         Listener = listener;
@@ -108,15 +105,7 @@ public class Servant{
         this.logDao = logDao;
     }
 
-    public RoomList getRoomList() {
-        return roomList;
-    }
-
-    public void setRoomList(RoomList roomList) {
-        this.roomList = roomList;
-    }
-
-
+    // 开始服务
     public boolean beginServe() throws InterruptedException {
         this.state = State.ON;
         if(!storeLog(ScheduleType.OPEN)){
@@ -128,12 +117,17 @@ public class Servant{
                 try {
                     while(state == State.ON){
                         Thread.sleep(60000/80);
+                        // 关闭服务对象线程退出
                         if(state==State.OFF) return;
+                        // 时间片轮转计时
                         if(RRFlag){
                             duration -= 60000/80;
                         }
+                        // 计费
                         changeFee(80);
+                        // 计时
                         room.setDuration(room.getDuration()+60000/80);
+                        // 达到目标温度
                         if ((mode == Mode.HOT && room.getCurrentTemp() >= request.getTargetTemp()) || (mode == Mode.COLD && room.getCurrentTemp() <= request.getTargetTemp())){
                             room.setState(State.HOLDON);
                             if(endServe()) {
@@ -141,6 +135,7 @@ public class Servant{
                                 return;
                             }
                         }
+                        // 时间片轮转到时间
                         if(0 == duration && RRFlag){
                             room.setState(State.WAIT);
                             if(endServe()) {
@@ -157,7 +152,7 @@ public class Servant{
         t.start();
         return true;
     }
-
+    // 结束服务
     public Boolean endServe()
     {
         this.state = State.OFF;
@@ -166,12 +161,12 @@ public class Servant{
         return true;
     }
 
-
+    // 存储日志
     private boolean storeLog(ScheduleType scheduleType){
         Log log = new Log(request.getCustomId(),request.getRoomId(), scheduleType, request.getTargetMode(), request.getFanSpeed(), room.getCurrentTemp(), request.getTargetTemp(), fee, feeRate);
         return logDao.storeLog(log);
     }
-
+    // 计费
     private void changeFee(int divide){
         fee += feeRate/divide;
         room.setFee(fee);
