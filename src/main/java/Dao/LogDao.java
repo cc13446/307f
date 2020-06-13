@@ -32,7 +32,7 @@ import utils.HibernateUtils;
  * 同时2时刻记录的温度和费用为2时刻当时的温度和费用，其他属性都为更改温度之后的属性。
  */
 public class LogDao {
-
+    // 存储一条日志
     public boolean storeLog(Log log){
         Session session = HibernateUtils.openSession();
         Transaction tx = session.beginTransaction();
@@ -45,6 +45,7 @@ public class LogDao {
         session.close();
         return true;
     }
+    // 查询日期内的总钱数
     public double QueryTotalFee(int roomId, Date dateIn, Date dateOut){
         Session session = HibernateUtils.openSession();
         Transaction tx = session.beginTransaction();
@@ -58,7 +59,7 @@ public class LogDao {
         session.close();
         return result;
     }
-
+    // 查询日期内的总开关数
     public int QueryTurnTimes(int roomId, Date dateIn, Date dateOut){
         Session session = HibernateUtils.openSession();
         Transaction tx = session.beginTransaction();
@@ -72,7 +73,7 @@ public class LogDao {
         session.close();
         return result.intValue();
     }
-
+    // 查询日期内的调度次数
     public int QuerySchedulerTimes(int roomId, Date dateIn, Date dateOut){
         Session session = HibernateUtils.openSession();
         Transaction tx = session.beginTransaction();
@@ -88,7 +89,7 @@ public class LogDao {
         session.close();
         return result.intValue();
     }
-
+    // 查询房间日期内的改变温度次数
     public int QueryChangeTempTimes(int roomId, Date dateIn, Date dateOut){
         Session session = HibernateUtils.openSession();
         Transaction tx = session.beginTransaction();
@@ -102,7 +103,7 @@ public class LogDao {
         session.close();
         return result.intValue();
     }
-
+    // 查询房间日期内的改变风速次数
     public int QueryChangeFanTimes(int roomId, Date dateIn, Date dateOut){
         Session session = HibernateUtils.openSession();
         Transaction tx = session.beginTransaction();
@@ -116,6 +117,7 @@ public class LogDao {
         session.close();
         return result.intValue();
     }
+    // 查询所有开关的日志，计算使用时间报表时用
     @SuppressWarnings("unchecked")
     public List<Log> QueryOnOffLog(int roomId, Date dateIn, Date dateOut){
         Session session = HibernateUtils.openSession();
@@ -132,6 +134,7 @@ public class LogDao {
         session.close();
         return list;
     }
+    // 查询组这个房间的客户数量
     @SuppressWarnings("unchecked")
     public int QueryCustomNumber(int roomId, Date dateIn, Date dateOut){
         Session session = HibernateUtils.openSession();
@@ -146,6 +149,7 @@ public class LogDao {
         session.close();
         return result;
     }
+    // 查询一个客户所有日志记录，计算详单时使用
     @SuppressWarnings("unchecked")
     public List<Log> QueryLog(int customId){
         Session session = HibernateUtils.openSession();
@@ -159,6 +163,7 @@ public class LogDao {
         session.close();
         return list;
     }
+    // 查询最大的客户ID
     @SuppressWarnings("unchecked")
     public int QueryMaxCustomId(){
         Session session = HibernateUtils.openSession();
@@ -173,6 +178,7 @@ public class LogDao {
         session.close();
         return result;
     }
+    // 查询这个房间最后入住的客户ID
     @SuppressWarnings("unchecked")
     public int QueryCustomId(int roomId){
         Session session = HibernateUtils.openSession();
@@ -188,6 +194,7 @@ public class LogDao {
         session.close();
         return result;
     }
+    // 查询最近客户的入住日期
     @SuppressWarnings("unchecked")
     public Date QueryRequestDateIn(int customId){
         Session session = HibernateUtils.openSession();
@@ -204,6 +211,7 @@ public class LogDao {
         session.close();
         return result;
     }
+    // 查询最近客户的退房日期
     @SuppressWarnings("unchecked")
     public Date QueryRequestDateOut(int customId){
         Session session = HibernateUtils.openSession();
@@ -220,6 +228,7 @@ public class LogDao {
         session.close();
         return result;
     }
+    // 查询最近客户的总费用
     public double QueryTotalFee(int customId){
         Session session = HibernateUtils.openSession();
         Transaction tx = session.beginTransaction();

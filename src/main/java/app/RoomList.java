@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Domain.Room;
+import Domain.RoomStateForm;
 import Enum.*;
 
 public class RoomList {

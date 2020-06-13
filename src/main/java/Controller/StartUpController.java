@@ -101,8 +101,8 @@ public class StartUpController {
                 "/room/exit",
                 "/room/fee"
         ));
-
         clientServe.beginServe(urlList,handlerList);
+        System.out.println("创建handler");
 
         return true;
     }

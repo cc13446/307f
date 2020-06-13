@@ -8,9 +8,15 @@ import Domain.Report;
 import Domain.ReportForm;
 import Enum.*;
 
+/*
+ *  查看报表的服务对象（来自经理的服务）
+ *  最后更新时间：2020/6/8 20:20
+ */
+
 public class ReportServant {
     private LogDao logDao;
-    private Report report;//报表对象
+    //报表对象
+    private Report report;
 
 
     //构造方法
@@ -85,12 +91,12 @@ public class ReportServant {
         return ReportFormList;
     }
 
-
     //获取前days天的date
     private Date subDays(Date date, int days) {
         return new Date(date.getTime() - days * 24 * 3600 * 1000);
     }
 
+    //获取房间使用的时间
     private long getRoomUseTime(List<Log> logList){
         if(logList.get(0).getScheduleType() == ScheduleType.REQUEST_OFF){
             logList.remove(0);

@@ -95,11 +95,86 @@
             <version>${slf4j.version}</version>
         </dependency>
 
-
     </dependencies>
-
     <build>
-        <finalName>demo1</finalName>
-    </build>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <resources>
+            <!-- 控制资源文件的拷贝 -->
+            <resource>
+                <!-- 本任用的idea 打包时需要修改src/main/java/resources 为 src/main/resources  否则配置文件打包不到,运行时又需要改回去,否则无法运行-->
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                    <include>**/*.dtd</include>
+                </includes>
+                <filtering>false</filtering>
+                <targetPath>${project.build.directory}/config</targetPath>
+            </resource>
+        </resources>
 
+        <plugins>
+
+            <!-- 设置编译版本 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <!-- 主程序入口main方法所在类 -->
+                        <manifest>
+                            <mainClass>app.Main</mainClass>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                        </manifest>
+                        <!-- (配置文件外置目录) -->
+                        <manifestEntries>
+                            <Class-Path>config/</Class-Path>
+                        </manifestEntries>
+                    </archive>
+                    <classesDirectory>
+                    </classesDirectory>
+                </configuration>
+            </plugin>
+            <!-- 拷贝依赖的jar包到lib目录 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ${project.build.directory}/lib
+                            </outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- 解决资源文件的编码问题 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
 </project>
