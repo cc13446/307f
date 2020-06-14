@@ -6,11 +6,15 @@ import MyHttpHandler.*;
 import MyHttpServe.HttpToServe;
 import app.Scheduler;
 import com.sun.net.httpserver.HttpHandler;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+/**
+ * 空调启动控制器：负责启动空调并设置空调参数
+ * 最后修改时间：2020/6/10 16:47
+ */
 
 public class StartUpController {
     private Scheduler scheduler;
@@ -60,6 +64,7 @@ public class StartUpController {
         this.defaultTargetTemp = defaultTargetTemp;
     }
 
+    // 构造函数
     public StartUpController(double feeRateHigh, double feeRateMid, double feeRateLow, Mode mode, double tempHighLimit, double tempLowLimit, double defaultTargetTemp) {
         this.feeRateHigh = feeRateHigh;
         this.feeRateMid = feeRateMid;
@@ -70,6 +75,7 @@ public class StartUpController {
         this.defaultTargetTemp = defaultTargetTemp;
     }
 
+    // 空调开机
     public boolean powerOn() throws IOException {
         System.out.println("powerOn 执行了");
         logDao = new LogDao();
@@ -107,6 +113,7 @@ public class StartUpController {
         return true;
     }
 
+    // 设置空调基本参数
     public boolean setPara(Mode mode, double tempHighLimit, double tempLowLimit, double defaultTargetTemp) {
         scheduler.setState(State.SET_MODE);
         scheduler.setDefaultMode(mode);
@@ -117,6 +124,7 @@ public class StartUpController {
         return true;
     }
 
+    // 空调启动
     public boolean startUp() {
         scheduler.setState(State.ON);
 

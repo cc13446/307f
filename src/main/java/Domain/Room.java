@@ -1,21 +1,31 @@
 package Domain;
 
-import Enum.*;
+import Enum.FanSpeed;
+import Enum.State;
 
-import java.lang.annotation.Target;
+/**
+ * 房间：用于在服务器中记录对应房间的各种状态
+ * 最后修改时间：2020/6/7 1:40
+ */
 
 public class Room {
-
-
-    //标志服务的唯一ID
+    // 标志服务的唯一ID
     private int customId;
+    // 房间中的空调状态
     private State state;
+    // 房间ID
     private int roomID;
+    // 房间的当前温度
     private double currentTemp;
+    // 空调的目标温度
     private double targetTemp;
+    // 当前的总费用
     private double fee;
+    // 当前费率
     private double feeRate;
+    // 当前风速
     private FanSpeed fanSpeed;
+    // 总服务时间
     private long duration;
 
     public long getDuration() {

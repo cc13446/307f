@@ -1,11 +1,16 @@
 package app;
 
+import Domain.Room;
+import Domain.RoomStateForm;
+import Enum.FanSpeed;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import Domain.Room;
-import Domain.RoomStateForm;
-import Enum.*;
+/**
+ * 房间列表：用于在服务器中记录所有房间对象
+ * 最后修改时间：2020/6/12 22:55
+ */
 
 public class RoomList {
     private static List<Room> totalRoomList;

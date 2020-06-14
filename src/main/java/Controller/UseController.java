@@ -5,6 +5,11 @@ import Domain.Room;
 import Enum.*;
 import app.*;
 
+/**
+ * 用户请求控制器：负责接收和处理用户开关空调的各种请求
+ * 最后修改时间：2020/6/12 2:55
+ */
+
 public class UseController {
     private Scheduler scheduler;
 
@@ -69,6 +74,7 @@ public class UseController {
     public Mode getMode(){
         return scheduler.getDefaultMode();
     }
+
     public int findRoomId(int customId){
         return scheduler.roomList.findRoom(customId).getRoomID();
     }
