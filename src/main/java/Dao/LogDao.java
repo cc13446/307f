@@ -49,7 +49,7 @@ public class LogDao {
     public double QueryTotalFee(int roomId, Date dateIn, Date dateOut){
         Session session = HibernateUtils.openSession();
         Transaction tx = session.beginTransaction();
-        Query query = session.createQuery("select sum(fee) from Log where roomId = ?1 and time >= ?2 and time <= ?3 and scheduleType = ?4");
+        Query query = session.createQuery("select max(fee) from Log where roomId = ?1 and time >= ?2 and time <= ?3 and scheduleType = ?4");
         query.setParameter(1, roomId);
         query.setParameter(2, dateIn);
         query.setParameter(3, dateOut);
@@ -183,8 +183,10 @@ public class LogDao {
     public int QueryCustomId(int roomId){
         Session session = HibernateUtils.openSession();
         Transaction tx = session.beginTransaction();
-        Query query = session.createQuery("select max(customId) from Log where roomId = ?1 ");
+
+        Query query = session.createQuery("select max(customId) from Log where roomId = ?1 and scheduleType = ?2");
         query.setParameter(1,roomId);
+        query.setParameter(2,ScheduleType.REQUEST_OFF);
         int result = 0;
         List<Integer> list = query.list();
         if(list != null && list.get(0) != null){
@@ -199,7 +201,7 @@ public class LogDao {
     public Date QueryRequestDateIn(int customId){
         Session session = HibernateUtils.openSession();
         Transaction tx = session.beginTransaction();
-        Query query = session.createQuery("select max(time) from Log where customId = ?1 and scheduleType = ?2");
+        Query query = session.createQuery("select min(time) from Log where customId = ?1 and scheduleType = ?2");
         query.setParameter(1,customId);
         query.setParameter(2,ScheduleType.REQUEST_ON);
         Date result = null;
@@ -232,7 +234,7 @@ public class LogDao {
     public double QueryTotalFee(int customId){
         Session session = HibernateUtils.openSession();
         Transaction tx = session.beginTransaction();
-        Query query = session.createQuery("select sum(fee) from Log where customId = ?1 and scheduleType = ?2");
+        Query query = session.createQuery("select max(fee) from Log where customId = ?1 and scheduleType = ?2");
         query.setParameter(1, customId);
         query.setParameter(2, ScheduleType.CLOSE);
         double result = (double)query.list().get(0);
